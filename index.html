@@ -87,12 +87,12 @@
   .row.quiet{padding:8px 0;}
 
   /* info */
-  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
-    border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);}
-  .info-cell{background:var(--card);padding:18px 22px;}
-  .info-cell h4{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 7px;font-weight:600;}
-  .info-cell p{margin:0;font-size:14.5px;}
-  .info-cell .sub{color:var(--muted);font-size:13px;margin-top:2px;}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .info-cell{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;}
+  .info-cell .ic{color:var(--rust);margin-bottom:11px;line-height:0;}
+  .info-cell h4{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 6px;font-weight:600;}
+  .info-cell p{margin:0;font-size:14.5px;font-weight:500;}
+  .info-cell .sub{color:var(--muted);font-size:13px;font-weight:400;margin-top:3px;}
 
   footer{border-top:1px solid var(--line);padding-top:20px;margin-top:8px;
     display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
@@ -144,21 +144,25 @@
     <h2>Practical information</h2>
     <div class="info-grid">
       <div class="info-cell">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
         <h4>Tuesday venue</h4>
         <p>Blue Square, Bochum city centre</p>
         <p class="sub">Close to the main station and the city-centre hotel</p>
       </div>
       <div class="info-cell">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
         <h4>Wednesday &amp; Thursday venue</h4>
         <p>Ruhr University Bochum, campus</p>
         <p class="sub">Room details to follow</p>
       </div>
       <div class="info-cell">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
         <h4>Accommodation</h4>
         <p>Holiday Inn Express Bochum by IHG</p>
         <p class="sub">Hotel nights are arranged for network members and their nominated ECR</p>
       </div>
       <div class="info-cell">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg></div>
         <h4>Registration</h4>
         <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSet3CzQn8L2GYQoEGWLp6T6oFy5Bt6kL3QDcRuJvG7BM1LCqA/viewform" target="_blank" rel="noopener">Open the registration form</a></p>
         <p class="sub">By 14 August 2026 · free, includes lunch for all registered participants</p>
