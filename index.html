@@ -67,8 +67,10 @@
   .dvenue svg{flex:none;color:var(--rust);}
   .dvenue .venue{color:var(--rust);font-weight:600;}
   .dvenue .theme{color:#43483f;}
-  .callout{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:13px 16px;font-size:14px;line-height:1.5;color:#43483f;margin:20px 0 0;}
-  .callout b{color:var(--ink);font-weight:600;}
+  .venuekey{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0;}
+  .vk{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:#43483f;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;}
+  .vk svg{flex:none;color:var(--rust);}
+  .vk b{color:var(--ink);font-weight:600;}
   .row{display:grid;grid-template-columns:104px 1fr auto;gap:16px;align-items:baseline;
     padding:11px 0;border-top:1px solid var(--line);}
   .day .row:first-of-type{border-top:none;}
@@ -126,9 +128,10 @@
       study of predictive processing in memory and perception (PPiMP), funded by the DFG.
       The programme brings together talks, keynotes, and a poster session, opening with a
       welcome reception on Tuesday evening and closing on Thursday at midday.</p>
-    <p class="callout">The venue changes during the week: <b>Tuesday</b> is at the Blue Square
-      in the city centre, and <b>Wednesday</b> and <b>Thursday</b> are on the Ruhr University
-      Bochum campus.</p>
+    <div class="venuekey">
+      <span class="vk"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Tuesday</b> · Blue Square, city centre</span></span>
+      <span class="vk"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Wed &amp; Thu</b> · Ruhr University Bochum campus</span></span>
+    </div>
   </section>
 
   <section>
