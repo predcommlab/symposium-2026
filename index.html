@@ -66,10 +66,12 @@
   .dhead .date{color:var(--rust);font-weight:500;font-size:15px;}
   .dvenue{color:var(--muted);font-size:14px;margin:0 0 14px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
   .dvenue svg{flex:none;color:var(--rust);}
-  .dvenue .venue{color:var(--rust);font-weight:600;}
+  .dvenue .venue{color:var(--rust);font-weight:600;text-decoration:none;}
+  .dvenue a.venue:hover{text-decoration:underline;}
   .dvenue .theme{color:#43483f;}
   .venuekey{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0;}
-  .vk{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:#43483f;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;}
+  .vk{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:#43483f;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;text-decoration:none;}
+  .vk:hover{border-color:var(--rust);}
   .vk svg{flex:none;color:var(--rust);}
   .vk b{color:var(--ink);font-weight:600;}
   .row{display:grid;grid-template-columns:104px 1fr auto;gap:16px;align-items:baseline;
@@ -130,8 +132,8 @@
     <p class="lead">The programme features talks, keynotes, and a poster session. It opens
       with a welcome reception on Tuesday evening and closes on Thursday at midday.</p>
     <div class="venuekey">
-      <span class="vk"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Tuesday</b> · Blue Square, Bochum city centre</span></span>
-      <span class="vk"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Wed &amp; Thu</b> · Ruhr University Bochum campus</span></span>
+      <a class="vk" href="https://www.google.com/maps/search/?api=1&amp;query=Blue+Square+Bochum" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Tuesday</b> · Blue Square, Bochum city centre</span></a>
+      <a class="vk" href="https://www.google.com/maps/search/?api=1&amp;query=Ruhr+University+Bochum" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Wed &amp; Thu</b> · Ruhr University Bochum campus</span></a>
     </div>
   </section>
 
@@ -187,6 +189,8 @@
 
   const BADGE = {keynote:["Keynote","b-keynote"], talk:["Talk","b-talk"], blitz:["Blitz","b-blitz"], social:["Social","b-social"]};
   const QUIET = new Set(["break","meal","note"]);
+  const MAP_BLUE = "https://www.google.com/maps/search/?api=1&query=Blue+Square+Bochum";
+  const MAP_RUB = "https://www.google.com/maps/search/?api=1&query=Ruhr+University+Bochum";
 
   function pad(t){ return /^\d:\d\d$/.test(t) ? "0" + t : t; }
   function toMin(t){ var m=/^(\d{1,2}):(\d{2})/.exec(t||""); return m ? (+m[1])*60 + (+m[2]) : 9999; }
@@ -239,7 +243,7 @@
       const day = document.createElement("div"); day.className = "day";
       day.innerHTML =
         '<div class="dhead"><h3>' + d.day + '</h3><span class="date">' + d.date + '</span></div>' +
-        '<p class="dvenue"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span class="venue">' + d.venue + '</span><span class="theme">· ' + d.theme + '</span></p>' +
+        '<p class="dvenue"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><a class="venue" href="' + (d.venue.indexOf('Blue Square')>=0 ? MAP_BLUE : MAP_RUB) + '" target="_blank" rel="noopener">' + d.venue + '</a><span class="theme">· ' + d.theme + '</span></p>' +
         items.map(itemHTML).join("");
       host.appendChild(day);
     });
