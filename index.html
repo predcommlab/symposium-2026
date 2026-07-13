@@ -189,6 +189,7 @@
   const QUIET = new Set(["break","meal","note"]);
 
   function pad(t){ return /^\d:\d\d$/.test(t) ? "0" + t : t; }
+  function toMin(t){ var m=/^(\d{1,2}):(\d{2})/.exec(t||""); return m ? (+m[1])*60 + (+m[2]) : 9999; }
   function timeText(it){ const s = pad(it.start); return it.end ? s + "–" + pad(it.end) : "from " + s; }
 
   function parseCSV(text){
@@ -232,7 +233,9 @@
     const host = document.getElementById("program");
     host.innerHTML = "";
     PROGRAM.forEach(function(d){
-      const items = (sheet && sheet.length) ? sheet.filter(it=>it.day===d.day) : d.items;
+      const items = (sheet && sheet.length)
+        ? sheet.filter(it=>it.day.toLowerCase()===d.day.toLowerCase()).sort((a,b)=>toMin(a.start)-toMin(b.start))
+        : d.items;
       const day = document.createElement("div"); day.className = "day";
       day.innerHTML =
         '<div class="dhead"><h3>' + d.day + '</h3><span class="date">' + d.date + '</span></div>' +
