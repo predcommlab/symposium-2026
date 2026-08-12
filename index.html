@@ -20,6 +20,9 @@
 <style>
   :root{
     --navy:#1f2c4d; --navy-deep:#18213b; --navy-soft:#2b3a63;
+    /* venue accent: a lighter blue than --navy-soft, which is meant for dark
+       backgrounds and reads too heavy as link text on white */
+    --blue:#4c6cb8;
     --bg:#f4f4f2; --card:#ffffff; --ink:#1b2333; --muted:#6b7280;
     --coral:#d95f3c; --coral-deep:#b8492a; --line:#e6e5df;
     --shadow:0 1px 2px rgba(20,28,50,.05),0 2px 8px rgba(20,28,50,.06);
@@ -32,8 +35,8 @@
   .wrap{max-width:940px;margin:0 auto;padding:24px 20px 64px;}
   a{color:var(--coral);}
   /* One colour per venue, used everywhere a venue is named, so the two are
-     told apart at a glance: Blue Square navy, the RUB campus coral. */
-  a.v-blue{color:var(--navy-soft);}
+     told apart at a glance: Blue Square blue, the RUB campus coral. */
+  a.v-blue{color:var(--blue);}
   h2{font-family:"Space Grotesk","Inter",sans-serif;font-weight:600;font-size:23px;
     letter-spacing:-.01em;margin:0 0 4px;}
   .lead{color:#454b57;font-size:16px;line-height:1.62;max-width:680px;margin:0 0 13px;}
@@ -72,14 +75,14 @@
   .dvenue svg{flex:none;color:var(--coral);}
   .dvenue .venue{color:var(--coral);font-weight:600;
     text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;}
-  .dvenue.v-blue svg,.dvenue.v-blue .venue{color:var(--navy-soft);}
+  .dvenue.v-blue svg,.dvenue.v-blue .venue{color:var(--blue);}
   .dvenue .theme{color:#454b57;}
   .venuekey{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0;}
   .vk{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--coral);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;text-decoration:underline;text-underline-offset:2px;}
   .vk:hover{border-color:var(--coral);background:#fbeee9;}
   .vk svg{flex:none;color:var(--coral);}
-  .vk.v-blue,.vk.v-blue svg{color:var(--navy-soft);}
-  .vk.v-blue:hover{border-color:var(--navy-soft);background:#eef1f8;}
+  .vk.v-blue,.vk.v-blue svg{color:var(--blue);}
+  .vk.v-blue:hover{border-color:var(--blue);background:#eef2fa;}
   .vk b{color:var(--ink);font-weight:600;}
   .row{display:grid;grid-template-columns:104px 1fr auto;gap:16px;align-items:baseline;
     padding:11px 0;border-top:1px solid var(--line);}
@@ -177,7 +180,7 @@
       <div class="speaker">
         <img src="images/speaker-bird.jpg" alt="Chris Bird" loading="lazy">
         <div>
-          <h3>Prof Chris Bird</h3>
+          <h3>Prof. Chris Bird</h3>
           <p class="affil">University of Sussex</p>
           <h4 class="tlabel">Talk</h4>
           <p class="talk">Remembering the present and predicting the past</p>
@@ -186,7 +189,7 @@
       <div class="speaker">
         <img src="images/speaker-press.jpg" alt="Clare Press" loading="lazy">
         <div>
-          <h3>Prof Clare Press</h3>
+          <h3>Prof. Clare Press</h3>
           <p class="affil">UCL</p>
           <h4 class="tlabel">Talk</h4>
           <p class="talk">The synergistic interaction between learning and perception</p>
@@ -195,7 +198,7 @@
       <div class="speaker">
         <img src="images/speaker-muckli.jpg" alt="Lars Muckli" loading="lazy">
         <div>
-          <h3>Prof Lars Muckli</h3>
+          <h3>Prof. Lars Muckli</h3>
           <p class="affil">University of Glasgow</p>
           <h4 class="tlabel">Talk</h4>
           <p class="talk tbc">Title to be confirmed</p>
