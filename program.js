@@ -22,7 +22,7 @@ const PROGRAM = [
       {start:"16:00", end:"16:15", kind:"note",    title:"Arrival"},
       {start:"16:15", end:"16:30", kind:"session", title:"Opening", who:"Andrea Greve & Helen Blank"},
       {start:"16:30", end:"17:00", kind:"blitz",   title:"Poster blitzes"},
-      {start:"17:00", end:"17:45", kind:"keynote", title:"Keynote", who:"Clare Press"},
+      {start:"17:00", end:"17:45", kind:"keynote", title:"The synergistic interaction between learning and perception", who:"Clare Press"},
       {start:"18:00", end:"20:00", kind:"social",  title:"Reception with poster session"}
     ]
   },
@@ -41,7 +41,7 @@ const PROGRAM = [
       {start:"14:30", end:"15:00", kind:"talk",    title:"Talk 5", who:"TBA"},
       {start:"15:00", end:"15:30", kind:"talk",    title:"Talk 6", who:"TBA"},
       {start:"15:30", end:"16:30", kind:"break",   title:"Coffee break and cake"},
-      {start:"16:30", end:"17:30", kind:"keynote", title:"Keynote", who:"Chris Bird"},
+      {start:"16:30", end:"17:30", kind:"keynote", title:"Remembering the present and predicting the past", who:"Chris Bird"},
       {start:"17:30", end:"18:00", kind:"session", title:"General discussion", who:"chaired by Andrea Greve & Helen Blank"},
       {start:"19:00", end:"",      kind:"social",  title:"Internal conference dinner", who:"speakers and network members"}
     ]
