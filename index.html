@@ -101,6 +101,18 @@
   .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 12px;}
   .gallery img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px;display:block;border:1px solid var(--line);}
 
+  /* keynote speakers */
+  .speakers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .speaker{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:22px 20px 20px;text-align:center;}
+  .speaker img{width:132px;height:176px;object-fit:cover;border-radius:12px;display:block;
+    margin:0 auto 14px;border:1px solid var(--line);background:#eceae5;}
+  .speaker h3{font-family:"Space Grotesk","Inter",sans-serif;font-weight:600;font-size:16.5px;
+    letter-spacing:-.01em;margin:0 0 3px;}
+  .speaker .affil{font-size:13px;color:var(--muted);margin:0 0 11px;}
+  .speaker .talk{font-size:14px;color:#454b57;line-height:1.5;margin:0;}
+  .speaker .talk.tbc{color:var(--muted);font-style:italic;}
+
   footer{border-top:1px solid var(--line);padding-top:20px;margin-top:8px;
     display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
   .foot-line{font-size:14px;}.foot-line b{font-weight:600;}
@@ -111,6 +123,10 @@
     .row{grid-template-columns:88px 1fr;}.badge{display:none;}
     .info-grid{grid-template-columns:1fr;}
     .gallery{grid-template-columns:1fr;}
+    .speakers{grid-template-columns:1fr;}
+    .speaker{display:flex;gap:16px;text-align:left;align-items:flex-start;padding:16px;}
+    .speaker img{width:96px;height:128px;margin:0;flex:none;}
+    .speaker .affil{margin-bottom:7px;}
   }
 </style>
 </head>
@@ -139,6 +155,37 @@
     <div class="venuekey">
       <a class="vk" href="https://www.google.com/maps/search/?api=1&amp;query=Blue+Square+Bochum" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Tuesday</b> · Blue Square, Bochum city centre</span></a>
       <a class="vk" href="https://www.google.com/maps/search/?api=1&amp;query=Ruhr+University+Bochum" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Wed &amp; Thu</b> · Ruhr University Bochum campus</span></a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Keynote speakers</h2>
+    <p class="tag-note">Talk titles are added as they are confirmed.</p>
+    <div class="speakers">
+      <div class="speaker">
+        <img src="images/speaker-bird.jpg" alt="Chris Bird" loading="lazy">
+        <div>
+          <h3>Prof Chris Bird</h3>
+          <p class="affil">University of Sussex</p>
+          <p class="talk">Remembering the present and predicting the past</p>
+        </div>
+      </div>
+      <div class="speaker">
+        <img src="images/speaker-press.jpg" alt="Clare Press" loading="lazy">
+        <div>
+          <h3>Prof Clare Press</h3>
+          <p class="affil">UCL</p>
+          <p class="talk">The synergistic interaction between learning and perception</p>
+        </div>
+      </div>
+      <div class="speaker">
+        <img src="images/speaker-muckli.jpg" alt="Lars Muckli" loading="lazy">
+        <div>
+          <h3>Prof Lars Muckli</h3>
+          <p class="affil">University of Glasgow</p>
+          <p class="talk tbc">Title to be confirmed</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -229,7 +276,11 @@
     if(rows.length<2) return [];
     const head=rows[0].map(h=>h.trim().toLowerCase());
     const col=n=>head.indexOf(n);
-    const iD=col("day"),iS=col("start"),iE=col("end"),iK=col("kind"),iT=col("title"),iW=col("who");
+    // The Day header has been overwritten by accident before (a speaker name
+    // typed into A1), which silently emptied the whole programme. If there is
+    // no "day" header, fall back to the first column.
+    const iD=col("day")>=0?col("day"):0;
+    const iS=col("start"),iE=col("end"),iK=col("kind"),iT=col("title"),iW=col("who");
     return rows.slice(1).map(r=>({
       day:(r[iD]||"").trim(), start:(r[iS]||"").trim(), end:(r[iE]||"").trim(),
       kind:(r[iK]||"note").trim().toLowerCase(), title:(r[iT]||"").trim(), who:(r[iW]||"").trim()
@@ -263,13 +314,21 @@
       host.appendChild(day);
     });
   }
+  // Only use the sheet if its rows actually land on the scheduled days.
+  // Otherwise painting it would replace the programme with three empty days.
+  function usable(s){
+    return s.length && PROGRAM.some(function(d){
+      return s.some(function(it){ return it.day.toLowerCase() === d.day.toLowerCase(); });
+    });
+  }
   async function render(){
     paint(null);  // show the built-in copy at once, no blank flash
     if(SHEET_CSV_URL){
       try{
         const r = await fetch(SHEET_CSV_URL);
         const s = parseSheet(await r.text());
-        if(s.length) paint(s);  // upgrade to the live sheet when it arrives
+        if(usable(s)) paint(s);  // upgrade to the live sheet when it arrives
+        else if(s.length) console.warn("Programme sheet has rows but none match the scheduled days; keeping the built-in copy. Check the Day column header.");
       }catch(e){ console.warn("Programme sheet unavailable, using the built-in copy.", e); }
     }
   }
