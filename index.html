@@ -92,12 +92,14 @@
      matter: with the name at the title's weight the two lines blur into one
      block, and with the name at --muted it disappears. */
   .ttl{font-size:15px;font-weight:600;line-height:1.45;}
+  .ttl.work{font-style:italic;}
   .who{font-size:14px;color:#4b5563;font-weight:400;margin-top:3px;}
   .badge{font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
     padding:3px 9px;border-radius:999px;white-space:nowrap;align-self:center;}
   .b-keynote{background:#f8e3db;color:var(--coral-deep);}
   .b-talk{background:#e6e9f4;color:#384573;}
   .b-blitz{background:#ece7f4;color:#634b84;}
+  .b-session{background:#eaecf0;color:#4d5766;}
   .b-social{background:#f4ead0;color:#8a6a1d;}
   .row.quiet .ttl{font-weight:400;color:var(--muted);}
   .row.quiet{padding:8px 0;}
@@ -270,7 +272,17 @@
   // sheet's "Publish to web" CSV link here. Empty = use the built-in program.js.
   const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ9zaxLgSEWjbET5A1-OiFWSAxF7x71_wTVc1W_fbjO-W-Q1H7rg2lgeKqvjWQhMxlbn5zmOXinyjQF/pub?gid=0&single=true&output=csv";
 
-  const BADGE = {keynote:["Keynote","b-keynote"], talk:["Talk","b-talk"], blitz:["Blitz","b-blitz"], social:["Social","b-social"]};
+  const BADGE = {keynote:["Keynote","b-keynote"], talk:["Talk","b-talk"], blitz:["Blitz","b-blitz"],
+                 session:["Session","b-session"], social:["Social","b-social"]};
+
+  // A talk title names a work, so it is italicised; "General discussion" or
+  // "Opening" name an activity and stay roman. A title that is only its own
+  // kind ("Keynote", "Talk 1") is a placeholder, not a work title.
+  const WORK = new Set(["keynote","talk"]);
+  function isWorkTitle(it){
+    if(!WORK.has(it.kind)) return false;            // kind is one of the two above,
+    return !new RegExp("^" + it.kind + "\\s*\\d*$", "i").test((it.title||"").trim());
+  }                                                 // so it is safe in the pattern
   const QUIET = new Set(["break","meal","note"]);
   const MAP_BLUE = "https://www.google.com/maps/search/?api=1&query=Blue+Square+Bochum";
   const MAP_RUB = "https://www.google.com/maps/search/?api=1&query=Ruhr+University+Bochum";
@@ -313,7 +325,7 @@
     const badge = BADGE[it.kind];
     return '<div class="row' + (quiet ? ' quiet' : '') + '">' +
       '<div class="time">' + timeText(it) + '</div>' +
-      '<div><div class="ttl">' + it.title + '</div>' +
+      '<div><div class="ttl' + (isWorkTitle(it) ? ' work' : '') + '">' + it.title + '</div>' +
         (it.who ? '<div class="who">' + it.who + '</div>' : '') +
       '</div>' +
       (badge ? '<span class="badge ' + badge[1] + '">' + badge[0] + '</span>' : '<span></span>') +
