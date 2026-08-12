@@ -31,6 +31,9 @@
     font-family:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
   .wrap{max-width:940px;margin:0 auto;padding:24px 20px 64px;}
   a{color:var(--coral);}
+  /* One colour per venue, used everywhere a venue is named, so the two are
+     told apart at a glance: Blue Square navy, the RUB campus coral. */
+  a.v-blue{color:var(--navy-soft);}
   h2{font-family:"Space Grotesk","Inter",sans-serif;font-weight:600;font-size:23px;
     letter-spacing:-.01em;margin:0 0 4px;}
   .lead{color:#454b57;font-size:16px;line-height:1.62;max-width:680px;margin:0 0 13px;}
@@ -67,20 +70,23 @@
   .dhead .date{color:var(--coral);font-weight:500;font-size:15px;}
   .dvenue{color:var(--muted);font-size:14px;margin:0 0 14px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
   .dvenue svg{flex:none;color:var(--coral);}
-  .dvenue .venue{color:var(--coral);font-weight:600;text-decoration:none;}
-  .dvenue a.venue:hover{text-decoration:underline;}
+  .dvenue .venue{color:var(--coral);font-weight:600;
+    text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;}
+  .dvenue.v-blue svg,.dvenue.v-blue .venue{color:var(--navy-soft);}
   .dvenue .theme{color:#454b57;}
   .venuekey{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 0;}
   .vk{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--coral);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;text-decoration:underline;text-underline-offset:2px;}
   .vk:hover{border-color:var(--coral);background:#fbeee9;}
   .vk svg{flex:none;color:var(--coral);}
+  .vk.v-blue,.vk.v-blue svg{color:var(--navy-soft);}
+  .vk.v-blue:hover{border-color:var(--navy-soft);background:#eef1f8;}
   .vk b{color:var(--ink);font-weight:600;}
   .row{display:grid;grid-template-columns:104px 1fr auto;gap:16px;align-items:baseline;
     padding:11px 0;border-top:1px solid var(--line);}
   .day .row:first-of-type{border-top:none;}
   .time{font-variant-numeric:tabular-nums;font-size:13.5px;color:var(--muted);white-space:nowrap;}
   .ttl{font-size:15px;font-weight:500;}
-  .who{font-size:13.5px;color:var(--muted);margin-top:1px;}
+  .who{font-size:14px;color:#333c4c;font-weight:500;margin-top:2px;}
   .badge{font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
     padding:3px 9px;border-radius:999px;white-space:nowrap;align-self:center;}
   .b-keynote{background:#f8e3db;color:var(--coral-deep);}
@@ -109,9 +115,11 @@
     margin:0 auto 14px;border:1px solid var(--line);background:#eceae5;}
   .speaker h3{font-family:"Space Grotesk","Inter",sans-serif;font-weight:600;font-size:16.5px;
     letter-spacing:-.01em;margin:0 0 3px;}
-  .speaker .affil{font-size:13px;color:var(--muted);margin:0 0 11px;}
-  .speaker .talk{font-size:14px;color:#454b57;line-height:1.5;margin:0;}
-  .speaker .talk.tbc{color:var(--muted);font-style:italic;}
+  .speaker .affil{font-size:13px;color:var(--muted);margin:0 0 13px;}
+  .speaker .tlabel{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--coral-deep);margin:0 0 6px;padding-top:13px;border-top:1px solid var(--line);}
+  .speaker .talk{font-size:14.5px;color:var(--ink);line-height:1.5;margin:0;}
+  .speaker .talk.tbc{font-size:14px;color:var(--muted);font-style:italic;}
 
   footer{border-top:1px solid var(--line);padding-top:20px;margin-top:8px;
     display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
@@ -126,7 +134,11 @@
     .speakers{grid-template-columns:1fr;}
     .speaker{display:flex;gap:16px;text-align:left;align-items:flex-start;padding:16px;}
     .speaker img{width:96px;height:128px;margin:0;flex:none;}
-    .speaker .affil{margin-bottom:7px;}
+    /* fill the row, so the rule above the talk title is the same width on
+       every card whether the title is long or short */
+    .speaker > div{flex:1;min-width:0;}
+    .speaker .affil{margin-bottom:9px;}
+    .speaker .tlabel{padding-top:9px;}
   }
 </style>
 </head>
@@ -153,7 +165,7 @@
     <p class="lead">The programme features talks, keynotes, and a poster session. It opens
       with a welcome reception on Tuesday evening and closes on Thursday at midday.</p>
     <div class="venuekey">
-      <a class="vk" href="https://www.google.com/maps/search/?api=1&amp;query=Blue+Square+Bochum" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Tuesday</b> · Blue Square, Bochum city centre</span></a>
+      <a class="vk v-blue" href="https://www.google.com/maps/search/?api=1&amp;query=Blue+Square+Bochum" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Tuesday</b> · Blue Square, Bochum city centre</span></a>
       <a class="vk" href="https://www.google.com/maps/search/?api=1&amp;query=Ruhr+University+Bochum" target="_blank" rel="noopener"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><span><b>Wed &amp; Thu</b> · Ruhr University Bochum campus</span></a>
     </div>
   </section>
@@ -167,6 +179,7 @@
         <div>
           <h3>Prof Chris Bird</h3>
           <p class="affil">University of Sussex</p>
+          <h4 class="tlabel">Talk</h4>
           <p class="talk">Remembering the present and predicting the past</p>
         </div>
       </div>
@@ -175,6 +188,7 @@
         <div>
           <h3>Prof Clare Press</h3>
           <p class="affil">UCL</p>
+          <h4 class="tlabel">Talk</h4>
           <p class="talk">The synergistic interaction between learning and perception</p>
         </div>
       </div>
@@ -183,6 +197,7 @@
         <div>
           <h3>Prof Lars Muckli</h3>
           <p class="affil">University of Glasgow</p>
+          <h4 class="tlabel">Talk</h4>
           <p class="talk tbc">Title to be confirmed</p>
         </div>
       </div>
@@ -211,7 +226,7 @@
       <div class="info-cell">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
         <h4>Tuesday venue</h4>
-        <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Blue+Square+Bochum" target="_blank" rel="noopener">Blue Square, Bochum city centre</a></p>
+        <p><a class="v-blue" href="https://www.google.com/maps/search/?api=1&amp;query=Blue+Square+Bochum" target="_blank" rel="noopener">Blue Square, Bochum city centre</a></p>
         <p class="sub">Close to the main station and the city-centre hotel</p>
       </div>
       <div class="info-cell">
@@ -306,10 +321,11 @@
       const items = (sheet && sheet.length)
         ? sheet.filter(it=>it.day.toLowerCase()===d.day.toLowerCase()).sort((a,b)=>toMin(a.start)-toMin(b.start))
         : d.items;
+      const isBlue = d.venue.indexOf('Blue Square') >= 0;
       const day = document.createElement("div"); day.className = "day";
       day.innerHTML =
         '<div class="dhead"><h3>' + d.day + '</h3><span class="date">' + d.date + '</span></div>' +
-        '<p class="dvenue"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><a class="venue" href="' + (d.venue.indexOf('Blue Square')>=0 ? MAP_BLUE : MAP_RUB) + '" target="_blank" rel="noopener">' + d.venue + '</a><span class="theme">· ' + d.theme + '</span></p>' +
+        '<p class="dvenue ' + (isBlue ? 'v-blue' : 'v-rub') + '"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg><a class="venue" href="' + (isBlue ? MAP_BLUE : MAP_RUB) + '" target="_blank" rel="noopener">' + d.venue + '</a><span class="theme">· ' + d.theme + '</span></p>' +
         items.map(itemHTML).join("");
       host.appendChild(day);
     });
