@@ -66,5 +66,7 @@ const PROGRAM = [
  * index.html): {title, who, affil, blitz} — blitz: true marks a poster whose
  * presenter also gives a poster blitz. Rendered as a drop-down on the
  * "Reception with poster session" row; empty = the drop-down is not shown.
+ * The live tab is approval-gated (only rows with yes in Approved render);
+ * entries listed here count as approved, so only mirror approved ones.
  */
 const POSTERS = [];

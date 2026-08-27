@@ -364,14 +364,21 @@
     // Strict headers on purpose, unlike the programme's first-column fallback:
     // a wrong gid in POSTERS_CSV_URL serves some OTHER tab's CSV, and without
     // this check every row of it would render as a poster.
-    const iT=col("title"),iP=col("presenter"),iA=col("affiliation"),iB=col("blitz");
+    const iT=col("title"),iP=col("presenter"),iA=col("affiliation"),iB=col("blitz"),iOK=col("approved");
     if(iT<0 || (iP<0 && iB<0)) return [];
+    // Approval gate (Helen, 2026-08-27): an entry renders only once she has
+    // put yes in its Approved cell, so the tab can safely hold every
+    // submission while she picks. No Approved column at all = show nothing:
+    // fail closed, so a renamed header can never publish unapproved entries.
+    if(iOK<0){ console.warn("Posters tab has no Approved column; hiding all entries."); return []; }
+    const yes=v=>/^(y|j|x|1|true|ok|approved)/i.test((v||"").trim());
     return rows.slice(1).map(r=>({
       title:(r[iT]||"").trim(),
       who:iP>=0?(r[iP]||"").trim():"",
       affil:iA>=0?(r[iA]||"").trim():"",
-      blitz:iB>=0 && /^(y|j|x|1|true|blitz)/i.test((r[iB]||"").trim())
-    })).filter(p=>p.title);
+      blitz:iB>=0 && /^(y|j|x|1|true|blitz)/i.test((r[iB]||"").trim()),
+      ok:yes(r[iOK])
+    })).filter(p=>p.title && p.ok);
   }
   // Sheet text goes into innerHTML, so angle brackets in a title ("N < 30")
   // must not become markup.
