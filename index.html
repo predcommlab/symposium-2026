@@ -103,6 +103,24 @@
   .b-social{background:#f4ead0;color:#8a6a1d;}
   .row.quiet .ttl{font-weight:400;color:var(--muted);}
   .row.quiet{padding:8px 0;}
+  /* speaker affiliation: one clear step quieter than the name, so the name
+     stays what the eye lands on */
+  .who .aff{color:var(--muted);}
+  /* poster-session drop-down: a native <details> list fed by the sheet's
+     Posters tab; with no entries it is not rendered at all */
+  .plist{margin:7px 0 3px;}
+  .plist summary{cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+    font-size:13.5px;font-weight:500;color:var(--coral);list-style:none;padding:2px 0;}
+  .plist summary::-webkit-details-marker{display:none;}
+  .plist summary svg{flex:none;transition:transform .15s ease;}
+  .plist[open] summary svg{transform:rotate(90deg);}
+  .pgroup{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+    color:var(--muted);margin:14px 0 2px;}
+  .pitem{border-left:2px solid var(--line);padding:5px 0 5px 12px;margin:8px 0;}
+  .pitem .pt{font-size:14px;font-style:italic;line-height:1.5;}
+  .pitem .who{font-size:13px;margin-top:2px;}
+  /* an open poster list makes its row tall; keep the badge up at the title */
+  .row:has(.plist[open]) .badge{align-self:start;margin-top:2px;}
 
   /* info */
   .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
@@ -271,6 +289,14 @@
   // To let Helen & Andrea edit the programme in a Google Sheet, paste the
   // sheet's "Publish to web" CSV link here. Empty = use the built-in program.js.
   const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ9zaxLgSEWjbET5A1-OiFWSAxF7x71_wTVc1W_fbjO-W-Q1H7rg2lgeKqvjWQhMxlbn5zmOXinyjQF/pub?gid=0&single=true&output=csv";
+  // The same sheet's "Posters" tab (headers Title / Presenter / Affiliation /
+  // Blitz, one row per poster), fetched BY NAME through the gviz endpoint so
+  // no gid or re-publish is needed: the drop-down appears as soon as a tab
+  // with that name and those headers exists. Caveat: for a missing tab gviz
+  // serves the FIRST tab instead of erroring — parsePosters' strict header
+  // check is what keeps the programme from rendering as posters then.
+  // Empty URL = use the built-in POSTERS from program.js.
+  const POSTERS_CSV_URL = "https://docs.google.com/spreadsheets/d/1U3vR4HjfoAcoaiXgl-X8qaiVrRLNWLtObbOBJfRl3rM/gviz/tq?tqx=out:csv&sheet=Posters";
 
   const BADGE = {keynote:["Keynote","b-keynote"], talk:["Talk","b-talk"], blitz:["Blitz","b-blitz"],
                  session:["Session","b-session"], social:["Social","b-social"]};
@@ -281,8 +307,13 @@
   const WORK = new Set(["keynote","talk"]);
   function isWorkTitle(it){
     if(!WORK.has(it.kind)) return false;            // kind is one of the two above,
-    return !new RegExp("^" + it.kind + "\\s*\\d*$", "i").test((it.title||"").trim());
-  }                                                 // so it is safe in the pattern
+    const t = (it.title||"").trim();                // so it is safe in the pattern
+    if(new RegExp("^" + it.kind + "\\s*\\d*$", "i").test(t)) return false;
+    // "Talk 4: tba" is still a placeholder, not the name of a work
+    if(/^(?:keynote|talk)\s*\d*\s*:\s*(?:tba|tbc|title to be confirmed)\.?$/i.test(t)) return false;
+    if(/^(?:tba|tbc)$/i.test(t)) return false;
+    return true;
+  }
   const QUIET = new Set(["break","meal","note"]);
   const MAP_BLUE = "https://www.google.com/maps/search/?api=1&query=Blue+Square+Bochum";
   const MAP_RUB = "https://www.google.com/maps/search/?api=1&query=Ruhr+University+Bochum";
@@ -313,11 +344,55 @@
     // typed into A1), which silently emptied the whole programme. If there is
     // no "day" header, fall back to the first column.
     const iD=col("day")>=0?col("day"):0;
-    const iS=col("start"),iE=col("end"),iK=col("kind"),iT=col("title"),iW=col("who");
+    const iS=col("start"),iE=col("end"),iK=col("kind"),iT=col("title"),iW=col("who"),iA=col("affiliation");
     return rows.slice(1).map(r=>({
       day:(r[iD]||"").trim(), start:(r[iS]||"").trim(), end:(r[iE]||"").trim(),
-      kind:(r[iK]||"note").trim().toLowerCase(), title:(r[iT]||"").trim(), who:(r[iW]||"").trim()
+      kind:(r[iK]||"note").trim().toLowerCase(), title:(r[iT]||"").trim(), who:(r[iW]||"").trim(),
+      affil:iA>=0?(r[iA]||"").trim():""
     })).filter(it=>it.title||it.start);
+  }
+  function parsePosters(csv){
+    const rows=parseCSV(csv).filter(r=>r.some(c=>c.trim()!==""));
+    if(rows.length<2) return [];
+    const head=rows[0].map(h=>h.trim().toLowerCase());
+    const col=n=>head.indexOf(n);
+    // Strict headers on purpose, unlike the programme's first-column fallback:
+    // a wrong gid in POSTERS_CSV_URL serves some OTHER tab's CSV, and without
+    // this check every row of it would render as a poster.
+    const iT=col("title"),iP=col("presenter"),iA=col("affiliation"),iB=col("blitz");
+    if(iT<0 || (iP<0 && iB<0)) return [];
+    return rows.slice(1).map(r=>({
+      title:(r[iT]||"").trim(),
+      who:iP>=0?(r[iP]||"").trim():"",
+      affil:iA>=0?(r[iA]||"").trim():"",
+      blitz:iB>=0 && /^(y|j|x|1|true|blitz)/i.test((r[iB]||"").trim())
+    })).filter(p=>p.title);
+  }
+  // Sheet text goes into innerHTML, so angle brackets in a title ("N < 30")
+  // must not become markup.
+  function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+  function whoHTML(name, affil){
+    if(!name && !affil) return "";
+    return '<div class="who">' + esc(name) +
+      (affil ? '<span class="aff">' + (name ? ' · ' : '') + esc(affil) + '</span>' : '') +
+    '</div>';
+  }
+  // The poster list hangs off the poster-session row (kind "social", title
+  // mentioning posters) — not off the "Poster blitzes" talk slot, which is a
+  // stage session; Helen asked for one drop-down at the session itself.
+  function isPosterRow(it){ return it.kind === "social" && /poster/i.test(it.title||""); }
+  function postersHTML(list){
+    const item = p => '<div class="pitem"><div class="pt">' + esc(p.title) + '</div>' + whoHTML(p.who, p.affil) + '</div>';
+    const blitzes = list.filter(p=>p.blitz), posters = list.filter(p=>!p.blitz);
+    const inner = (blitzes.length && posters.length)
+      ? '<div class="pgroup">Poster blitzes</div>' + blitzes.map(item).join("") +
+        '<div class="pgroup">Posters</div>' + posters.map(item).join("")
+      : list.map(item).join("");
+    const label = (blitzes.length ? "Posters and poster blitzes" : "Posters") + " (" + list.length + ")";
+    return '<details class="plist"><summary>' +
+      '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5l8 7-8 7z"/></svg>' +
+      label + '</summary>' + inner + '</details>';
   }
 
   function itemHTML(it){
@@ -325,8 +400,9 @@
     const badge = BADGE[it.kind];
     return '<div class="row' + (quiet ? ' quiet' : '') + '">' +
       '<div class="time">' + timeText(it) + '</div>' +
-      '<div><div class="ttl' + (isWorkTitle(it) ? ' work' : '') + '">' + it.title + '</div>' +
-        (it.who ? '<div class="who">' + it.who + '</div>' : '') +
+      '<div><div class="ttl' + (isWorkTitle(it) ? ' work' : '') + '">' + esc(it.title) + '</div>' +
+        whoHTML(it.who, it.affil) +
+        (isPosterRow(it) && POSTERS_LIST.length ? postersHTML(POSTERS_LIST) : '') +
       '</div>' +
       (badge ? '<span class="badge ' + badge[1] + '">' + badge[0] + '</span>' : '<span></span>') +
     '</div>';
@@ -355,16 +431,32 @@
       return s.some(function(it){ return it.day.toLowerCase() === d.day.toLowerCase(); });
     });
   }
+  // Posters shown until the live tab arrives (or when it is unreachable).
+  let POSTERS_LIST = (typeof POSTERS !== "undefined" && POSTERS.length) ? POSTERS : [];
+
+  async function loadSheet(){
+    if(!SHEET_CSV_URL) return null;
+    try{
+      const r = await fetch(SHEET_CSV_URL);
+      const s = parseSheet(await r.text());
+      if(usable(s)) return s;
+      if(s.length) console.warn("Programme sheet has rows but none match the scheduled days; keeping the built-in copy. Check the Day column header.");
+    }catch(e){ console.warn("Programme sheet unavailable, using the built-in copy.", e); }
+    return null;
+  }
+  async function loadPosters(){
+    if(!POSTERS_CSV_URL) return POSTERS_LIST;
+    try{
+      const r = await fetch(POSTERS_CSV_URL);
+      return parsePosters(await r.text());
+    }catch(e){ console.warn("Posters tab unavailable, using the built-in copy.", e); return POSTERS_LIST; }
+  }
   async function render(){
     paint(null);  // show the built-in copy at once, no blank flash
-    if(SHEET_CSV_URL){
-      try{
-        const r = await fetch(SHEET_CSV_URL);
-        const s = parseSheet(await r.text());
-        if(usable(s)) paint(s);  // upgrade to the live sheet when it arrives
-        else if(s.length) console.warn("Programme sheet has rows but none match the scheduled days; keeping the built-in copy. Check the Day column header.");
-      }catch(e){ console.warn("Programme sheet unavailable, using the built-in copy.", e); }
-    }
+    const [sheet, posters] = await Promise.all([loadSheet(), loadPosters()]);
+    POSTERS_LIST = posters;
+    if(sheet) paint(sheet);  // upgrade to the live sheet when it arrives
+    else if(POSTERS_LIST.length) paint(null);  // repaint so the fallback programme carries the live poster list
   }
   render();
 </script>
