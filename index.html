@@ -390,21 +390,30 @@
     return (name ? '<div class="who">' + esc(name) + '</div>' : '') +
            (affil ? '<div class="aff">' + esc(affil) + '</div>' : '');
   }
-  // The poster list hangs off the poster-session row (kind "social", title
-  // mentioning posters) — not off the "Poster blitzes" talk slot, which is a
-  // stage session; Helen asked for one drop-down at the session itself.
+  // Each Tuesday slot lists its own line-up (Rui's call, 2026-09-02, after
+  // the single session-row list left the 16:30 slot looking empty and the
+  // reader guessing when blitzes happen): the poster-session row (kind
+  // "social", title mentioning posters) carries ALL posters, blitz entries
+  // badged since those presenters also spoke at 16:30; the blitz row (kind
+  // "blitz") carries just the blitz talks, unbadged — there they all are one.
   function isPosterRow(it){ return it.kind === "social" && /poster/i.test(it.title||""); }
-  function postersHTML(list){
-    // One flat list in sheet order; a blitz entry carries a small Blitz
-    // badge after its title. Helen's call (2026-09-02) — replaces the
-    // earlier two-group layout, which the per-entry badge made redundant.
+  function isBlitzRow(it){ return it.kind === "blitz" && /blitz/i.test(it.title||""); }
+  function plistHTML(list, label, withBadges){
+    // One flat list in sheet order (Helen's call, 2026-09-02: one list, "a
+    // little blitz next to those who give a blitz" — grouping retired).
     const item = p => '<div class="pitem"><div class="pt">' + esc(p.title) +
-      (p.blitz ? ' <span class="badge b-blitz">Blitz</span>' : '') + '</div>' +
+      (withBadges && p.blitz ? ' <span class="badge b-blitz">Blitz</span>' : '') + '</div>' +
       whoHTML(p.who, p.affil) + '</div>';
-    const label = (list.some(p=>p.blitz) ? "Posters and poster blitzes" : "Posters") + " (" + list.length + ")";
     return '<details class="plist"><summary>' +
       '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5l8 7-8 7z"/></svg>' +
-      label + '</summary>' + list.map(item).join("") + '</details>';
+      label + ' (' + list.length + ')</summary>' + list.map(item).join("") + '</details>';
+  }
+  function postersHTML(){
+    const label = POSTERS_LIST.some(p=>p.blitz) ? "Posters and poster blitzes" : "Posters";
+    return plistHTML(POSTERS_LIST, label, true);
+  }
+  function blitzTalksHTML(){
+    return plistHTML(POSTERS_LIST.filter(p=>p.blitz), "Blitz talks", false);
   }
 
   function itemHTML(it){
@@ -414,7 +423,8 @@
       '<div class="time">' + timeText(it) + '</div>' +
       '<div><div class="ttl' + (isWorkTitle(it) ? ' work' : '') + '">' + esc(it.title) + '</div>' +
         whoHTML(it.who, it.affil) +
-        (isPosterRow(it) && POSTERS_LIST.length ? postersHTML(POSTERS_LIST) : '') +
+        (isPosterRow(it) && POSTERS_LIST.length ? postersHTML() : '') +
+        (isBlitzRow(it) && POSTERS_LIST.some(p=>p.blitz) ? blitzTalksHTML() : '') +
       '</div>' +
       (badge ? '<span class="badge ' + badge[1] + '">' + badge[0] + '</span>' : '<span></span>') +
     '</div>';
