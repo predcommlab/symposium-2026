@@ -120,6 +120,10 @@
   .plist[open] summary svg{transform:rotate(90deg);}
   .pitem{border-left:2px solid var(--line);padding:5px 0 5px 12px;margin:8px 0;}
   .pt .badge{display:inline-block;margin-left:7px;vertical-align:2px;}
+  /* board number: roman and semibold against the italic title, tabular so
+     1 and 14 occupy the same width */
+  .pnr{font-style:normal;font-weight:600;font-variant-numeric:tabular-nums;
+    margin-right:9px;}
   .pitem .pt{font-size:14px;font-style:italic;line-height:1.5;}
   .pitem .who{font-size:13px;margin-top:2px;}
   .pitem .aff{font-size:12px;}
@@ -366,6 +370,10 @@
     // a wrong gid in POSTERS_CSV_URL serves some OTHER tab's CSV, and without
     // this check every row of it would render as a poster.
     const iT=col("title"),iP=col("presenter"),iA=col("affiliation"),iB=col("blitz"),iOK=col("approved");
+    // Board numbers come from an explicit Nr column, never from row order:
+    // they are painted on physical boards and told to presenters, so a
+    // deleted or reordered row must not silently renumber everyone else.
+    const iN=["nr","no","number"].map(col).find(i=>i>=0);
     if(iT<0 || (iP<0 && iB<0)) return [];
     // Approval gate (Helen, 2026-08-27): an entry renders only once she has
     // put yes in its Approved cell, so the tab can safely hold every
@@ -378,6 +386,7 @@
       who:iP>=0?(r[iP]||"").trim():"",
       affil:iA>=0?(r[iA]||"").trim():"",
       blitz:iB>=0 && /^(y|j|x|1|true|blitz)/i.test((r[iB]||"").trim()),
+      nr:iN!==undefined?(r[iN]||"").trim():"",
       ok:yes(r[iOK])
     })).filter(p=>p.title && p.ok);
   }
@@ -399,18 +408,28 @@
   function isPosterRow(it){ return it.kind === "social" && /poster/i.test(it.title||""); }
   function isBlitzRow(it){ return it.kind === "blitz" && /blitz/i.test(it.title||""); }
   function plistHTML(list, label, withBadges){
-    // One flat list in sheet order (Helen's call, 2026-09-02: one list, "a
-    // little blitz next to those who give a blitz" — grouping retired).
-    const item = p => '<div class="pitem"><div class="pt">' + esc(p.title) +
+    // One flat list (Helen's call, 2026-09-02: one list, "a little blitz
+    // next to those who give a blitz" — grouping retired). An entry's Nr,
+    // when given, leads its title as the board number (Helen, 2026-09-07).
+    const item = p => '<div class="pitem"><div class="pt">' +
+      (p.nr ? '<span class="pnr">' + esc(p.nr) + '</span>' : '') + esc(p.title) +
       (withBadges && p.blitz ? ' <span class="badge b-blitz">Blitz</span>' : '') + '</div>' +
       whoHTML(p.who, p.affil) + '</div>';
     return '<details class="plist"><summary>' +
       '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5l8 7-8 7z"/></svg>' +
       label + ' (' + list.length + ')</summary>' + list.map(item).join("") + '</details>';
   }
+  // The poster-session list orders by board number once numbers exist
+  // (entries without one keep sheet order at the end); the blitz-talks list
+  // always keeps sheet order, which is the speaking order.
+  function byNr(list){
+    if(!list.some(p=>p.nr)) return list;
+    const num = p => { const m = /^\d+/.exec(p.nr); return m ? +m[0] : Infinity; };
+    return list.slice().sort((a,b)=>num(a)-num(b));
+  }
   function postersHTML(){
     const label = POSTERS_LIST.some(p=>p.blitz) ? "Posters and poster blitzes" : "Posters";
-    return plistHTML(POSTERS_LIST, label, true);
+    return plistHTML(byNr(POSTERS_LIST), label, true);
   }
   function blitzTalksHTML(){
     return plistHTML(POSTERS_LIST.filter(p=>p.blitz), "Blitz talks", false);
