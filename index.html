@@ -124,6 +124,12 @@
      1 and 14 occupy the same width */
   .pnr{font-style:normal;font-weight:600;font-variant-numeric:tabular-nums;
     margin-right:9px;}
+  /* abstract: the same disclosure control as the poster list, opening to
+     body text; kept to a readable measure inside the wide row column */
+  .abs-text{margin:6px 0 4px;font-size:14px;line-height:1.6;color:#454b57;max-width:70ch;}
+  .abs-text p{margin:0 0 8px;}
+  .abs-text p:last-child{margin-bottom:0;}
+  .pitem .abs-text{font-size:13.5px;}
   .pitem .pt{font-size:14px;font-style:italic;line-height:1.5;}
   .pitem .who{font-size:13px;margin-top:2px;}
   .pitem .aff{font-size:12px;}
@@ -354,11 +360,12 @@
     // typed into A1), which silently emptied the whole programme. If there is
     // no "day" header, fall back to the first column.
     const iD=col("day")>=0?col("day"):0;
-    const iS=col("start"),iE=col("end"),iK=col("kind"),iT=col("title"),iW=col("who"),iA=col("affiliation");
+    const iS=col("start"),iE=col("end"),iK=col("kind"),iT=col("title"),iW=col("who"),iA=col("affiliation"),iAb=col("abstract");
     return rows.slice(1).map(r=>({
       day:(r[iD]||"").trim(), start:(r[iS]||"").trim(), end:(r[iE]||"").trim(),
       kind:(r[iK]||"note").trim().toLowerCase(), title:(r[iT]||"").trim(), who:(r[iW]||"").trim(),
-      affil:iA>=0?(r[iA]||"").trim():""
+      affil:iA>=0?(r[iA]||"").trim():"",
+      abstract:iAb>=0?(r[iAb]||"").trim():""
     })).filter(it=>it.title||it.start);
   }
   function parsePosters(csv){
@@ -369,7 +376,7 @@
     // Strict headers on purpose, unlike the programme's first-column fallback:
     // a wrong gid in POSTERS_CSV_URL serves some OTHER tab's CSV, and without
     // this check every row of it would render as a poster.
-    const iT=col("title"),iP=col("presenter"),iA=col("affiliation"),iB=col("blitz"),iOK=col("approved");
+    const iT=col("title"),iP=col("presenter"),iA=col("affiliation"),iB=col("blitz"),iOK=col("approved"),iAb=col("abstract");
     // Board numbers come from an explicit Nr column, never from row order:
     // they are painted on physical boards and told to presenters, so a
     // deleted or reordered row must not silently renumber everyone else.
@@ -387,6 +394,7 @@
       affil:iA>=0?(r[iA]||"").trim():"",
       blitz:iB>=0 && /^(y|j|x|1|true|blitz)/i.test((r[iB]||"").trim()),
       nr:iN!==undefined?(r[iN]||"").trim():"",
+      abstract:iAb>=0?(r[iAb]||"").trim():"",
       ok:yes(r[iOK])
     })).filter(p=>p.title && p.ok);
   }
@@ -398,6 +406,15 @@
     if(!name && !affil) return "";
     return (name ? '<div class="who">' + esc(name) + '</div>' : '') +
            (affil ? '<div class="aff">' + esc(affil) + '</div>' : '');
+  }
+  const CHEVRON = '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5l8 7-8 7z"/></svg>';
+  // Abstract (Helen's ask, 2026-09-24): a sheet cell's line breaks become
+  // paragraphs; empty cell = no disclosure at all.
+  function absHTML(text){
+    if(!text) return "";
+    const paras = text.split(/\n+/).map(s=>s.trim()).filter(Boolean).map(s=>'<p>' + esc(s) + '</p>').join("");
+    return '<details class="plist abs"><summary>' + CHEVRON + 'Abstract</summary>' +
+      '<div class="abs-text">' + paras + '</div></details>';
   }
   // Each Tuesday slot lists its own line-up (Rui's call, 2026-09-02, after
   // the single session-row list left the 16:30 slot looking empty and the
@@ -414,9 +431,8 @@
     const item = p => '<div class="pitem"><div class="pt">' +
       (p.nr ? '<span class="pnr">' + esc(p.nr) + '</span>' : '') + esc(p.title) +
       (withBadges && p.blitz ? ' <span class="badge b-blitz">Blitz</span>' : '') + '</div>' +
-      whoHTML(p.who, p.affil) + '</div>';
-    return '<details class="plist"><summary>' +
-      '<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5l8 7-8 7z"/></svg>' +
+      whoHTML(p.who, p.affil) + absHTML(p.abstract) + '</div>';
+    return '<details class="plist"><summary>' + CHEVRON +
       label + ' (' + list.length + ')</summary>' + list.map(item).join("") + '</details>';
   }
   // The poster-session list orders by board number once numbers exist
@@ -442,6 +458,7 @@
       '<div class="time">' + timeText(it) + '</div>' +
       '<div><div class="ttl' + (isWorkTitle(it) ? ' work' : '') + '">' + esc(it.title) + '</div>' +
         whoHTML(it.who, it.affil) +
+        absHTML(it.abstract) +
         (isPosterRow(it) && POSTERS_LIST.length ? postersHTML() : '') +
         (isBlitzRow(it) && POSTERS_LIST.some(p=>p.blitz) ? blitzTalksHTML() : '') +
       '</div>' +
