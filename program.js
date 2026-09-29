@@ -29,7 +29,7 @@ const PROGRAM = [
   },
   {
     day: "Wednesday", date: "7 October 2026",
-    venue: "Ruhr University Bochum, campus",
+    venue: "Tagungsraum II, Mensa building, Ruhr University Bochum",
     theme: "Full-day programme and conference dinner",
     items: [
       {start:"09:00", end:"09:30", kind:"talk",    title:"Talk 1: Dynamic Predictions: Interactions Between Memory, Context, and Sensory Processing", who:"Ryszard Auksztulewicz", affil:"Maastricht University"},
@@ -49,7 +49,7 @@ const PROGRAM = [
   },
   {
     day: "Thursday", date: "8 October 2026",
-    venue: "Ruhr University Bochum, campus",
+    venue: "Tagungsraum IV, Mensa building, Ruhr University Bochum",
     theme: "Closing session (with lunch packages)",
     items: [
       {start:"09:00", end:"09:30", kind:"talk",    title:"Talk 7: Predictive processing as a mechanism underlying word form learning", who:"Florian Hintz", affil:"University of Marburg"},
