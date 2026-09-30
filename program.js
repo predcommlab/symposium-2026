@@ -36,7 +36,7 @@ const PROGRAM = [
       {start:"09:30", end:"10:00", kind:"talk",    title:"Talk 2: Predictions reshape neural population codes in macaque inferotemporal cortex", who:"Caspar M. Schwiedrzik", affil:"Ruhr University Bochum"},
       {start:"10:00", end:"10:30", kind:"talk",    title:"Talk 3: Predictive Processing Unplugged", who:"Alejandro Tabas", affil:"Basque Center on Cognition, Brain and Language (BCBL)"},
       {start:"10:30", end:"11:00", kind:"break",   title:"Coffee break"},
-      {start:"11:00", end:"12:00", kind:"keynote", title:"Layers of primary visual cortex processing contextual predictions in human and mice", who:"Lars Muckli", affil:"University of Glasgow"},
+      {start:"11:00", end:"12:00", kind:"keynote", title:"The influence of experience on predictions in early visual cortex: Human fMRI with monkey and rodent neuroscience", who:"Lars Muckli", affil:"University of Glasgow"},
       {start:"12:00", end:"14:00", kind:"meal",    title:"Lunch (Mensa / Rote Bete) and a walk in the Botanical Garden"},
       {start:"14:00", end:"14:30", kind:"talk",    title:"Talk 4: Not what U think: Relationship between prediction error and episodic memory", who:"Yee Lee Shing", affil:"Goethe University Frankfurt"},
       {start:"14:30", end:"15:00", kind:"talk",    title:"Talk 5: The Influence of Knowledge on Perception in visual word recognition", who:"Benjamin Gagl", affil:"University of Cologne"},
