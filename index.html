@@ -170,38 +170,38 @@
   .info-cell p{margin:0;font-size:14.5px;font-weight:500;}
   .info-cell .sub{color:var(--muted);font-size:13px;font-weight:400;margin-top:3px;}
 
-  /* getting there: one card per venue in the venue's colour; the text block
-     takes the slack so both maps and links sit on the same line */
-  .travel-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
-  .travel-card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
-    padding:18px 20px;display:flex;flex-direction:column;}
-  .travel-card h4{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 6px;font-weight:600;}
-  .travel-card h3{font-family:"Space Grotesk","Inter",sans-serif;font-weight:600;font-size:17px;margin:0;
-    display:flex;align-items:center;gap:7px;color:var(--coral);}
-  .travel-card.v-blue h3,.travel-card.v-blue .dir{color:var(--blue);}
-  .travel-card .addr{font-size:13.5px;color:var(--muted);margin:3px 0 10px;}
+  /* getting there: one block per day, so everything for a day sits together;
+     text on the left, that day's map or note on the right (same column split
+     in both blocks), the campus maps in a row under the Wednesday/Thursday text */
   .lead.wide{max-width:none;}
-  .facts{flex:1;display:grid;grid-template-columns:auto 1fr;gap:7px 14px;margin:2px 0 0;
-    font-size:14px;line-height:1.55;color:#454b57;align-content:start;}
+  .venue-block{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+    padding:20px 22px;margin-top:14px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);
+    gap:18px 26px;align-items:start;}
+  .vb-text{display:flex;flex-direction:column;}
+  .vb-text h4{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 6px;font-weight:600;}
+  .vb-text h3{font-family:"Space Grotesk","Inter",sans-serif;font-weight:600;font-size:17px;margin:0;
+    display:flex;align-items:center;gap:7px;color:var(--coral);}
+  .venue-block.v-blue h3,.venue-block.v-blue .dir{color:var(--blue);}
+  .vb-text .addr{font-size:13.5px;color:var(--muted);margin:3px 0 12px;}
+  .facts{display:grid;grid-template-columns:auto 1fr;gap:7px 14px;margin:0;
+    font-size:14px;line-height:1.55;color:#454b57;}
   .facts dt{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px;}
   .facts dd{margin:0;}
   .facts b{color:var(--ink);font-weight:600;}
   .facts .sub{display:block;font-size:13px;color:var(--muted);margin-top:2px;}
-  .travel-card .dir{font-size:13.5px;font-weight:500;color:var(--coral);margin-top:12px;}
-  /* route maps (Helen's): one box shape for all four so the grid stays even;
-     the whole map stays visible and opens full size on click */
-  /* highlighted travel note (the explanations from Helen's maps) */
-  .notice{margin-top:14px;background:#fbeee9;border-left:4px solid var(--coral);border-radius:10px;
+  .vb-text .dir{font-size:13.5px;font-weight:500;color:var(--coral);margin-top:14px;}
+  /* highlighted note (the explanations from Helen's maps); Wednesday/Thursday only */
+  .notice{background:#fbeee9;border-left:4px solid var(--coral);border-radius:10px;
     padding:12px 16px;font-size:14px;line-height:1.6;color:#3c4350;}
   .notice p{margin:0 0 6px;}
   .notice p:last-child{margin-bottom:0;}
   .notice b{color:var(--coral-deep);font-weight:600;}
-  .map-gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
-  .map-gallery figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;
-    box-shadow:var(--shadow);padding:10px 10px 12px;}
-  .map-gallery img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;background:var(--card);border-radius:8px;}
-  .map-gallery figcaption{font-size:13px;color:#454b57;line-height:1.5;margin:9px 4px 0;}
-  .map-gallery figcaption b{font-weight:600;color:var(--ink);}
+  /* route maps (Helen's): equal 3:2 boxes, the whole map visible, full size on click */
+  .vb-maps{grid-column:1 / -1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+  .venue-block figure{margin:0;}
+  .venue-block figure img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;
+    background:var(--card);border:1px solid var(--line);border-radius:10px;}
+  .venue-block figcaption{font-size:13px;color:#454b57;line-height:1.5;margin:8px 2px 0;}
 
   .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 12px;}
   .gallery img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px;display:block;border:1px solid var(--line);}
@@ -232,8 +232,8 @@
        survives the narrow-screen badge hiding above */
     .plist .badge{display:inline-block;}
     .info-grid{grid-template-columns:1fr;}
-    .travel-grid{grid-template-columns:1fr;}
-    .map-gallery{grid-template-columns:1fr;}
+    .venue-block{grid-template-columns:1fr;padding:16px;}
+    .vb-maps{grid-template-columns:1fr;}
     .facts{grid-template-columns:1fr;gap:2px;}
     .facts dd{margin-bottom:8px;}
     .gallery{grid-template-columns:1fr;}
@@ -367,8 +367,8 @@
   <section id="travel">
     <h2>Getting there</h2>
     <p class="lead wide">Bochum Hauptbahnhof (main station) is served by long-distance and regional trains. The nearest major airport is Düsseldorf (DUS), with direct trains to Bochum Hauptbahnhof (about 35 minutes).</p>
-    <div class="travel-grid">
-      <div class="travel-card v-blue">
+    <div class="venue-block v-blue">
+      <div class="vb-text">
         <h4>Tuesday</h4>
         <h3><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>Blue Square</h3>
         <p class="addr">Kortumstraße 90, 44787 Bochum</p>
@@ -378,7 +378,14 @@
         </dl>
         <a class="dir" href="https://www.google.com/maps/search/?api=1&amp;query=Blue+Square,+Kortumstra%C3%9Fe+90,+44787+Bochum" target="_blank" rel="noopener">Open in Google Maps</a>
       </div>
-      <div class="travel-card">
+        <figure>
+          <a href="images/route-city-centre.jpg" target="_blank" rel="noopener"><img src="images/route-city-centre.jpg" width="1740" height="1024" alt="Map of Bochum city centre with walking routes between Bochum Hauptbahnhof, the Holiday Inn Express hotel and the Blue Square" loading="lazy"></a>
+          <figcaption>Walking routes between Bochum Hauptbahnhof, the hotel and the Blue Square.</figcaption>
+        </figure>
+    </div>
+
+    <div class="venue-block">
+      <div class="vb-text">
         <h4>Wednesday &amp; Thursday</h4>
         <h3><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>Ruhr University Bochum</h3>
         <p class="addr">Mensa building, Universitätsstraße 150, 44801 Bochum</p>
@@ -388,30 +395,27 @@
         </dl>
         <a class="dir" href="https://www.google.com/maps/search/?api=1&amp;query=Mensa+Ruhr-Universit%C3%A4t+Bochum" target="_blank" rel="noopener">Open in Google Maps</a>
       </div>
+      <div class="notice">
+        <p><b>Please note:</b> the U35 currently does not stop at Ruhr-Universität, as the station is being renovated. Get off at Gesundheitscampus or Lennershof instead and walk to the campus.</p>
+        <p>From Gesundheitscampus there are two paths: the solid line on the map leads through a small wooded area, the dashed line runs along the street. Both end with a flight of stairs up to the path to the Mensa.</p>
+        <p>Within Bochum, the U35 needs a fare level A ticket from the machines at the stations; a Deutschlandticket is also valid.</p>
+      </div>
+      <div class="vb-maps">
+        <figure>
+          <a href="images/route-gesundheitscampus.jpg" target="_blank" rel="noopener"><img src="images/route-gesundheitscampus.jpg" width="1662" height="1062" alt="Map of the walking routes from the U35 stop Gesundheitscampus to the Mensa building" loading="lazy"></a>
+          <figcaption>From the U35 stop Gesundheitscampus (solid line: through the wooded area; dashed line: along the street).</figcaption>
+        </figure>
+        <figure>
+          <a href="images/route-lennershof.jpg" target="_blank" rel="noopener"><img src="images/route-lennershof.jpg" width="1144" height="1080" alt="Map of the walking route from the U35 stop Lennershof to the Mensa building" loading="lazy"></a>
+          <figcaption>From the U35 stop Lennershof.</figcaption>
+        </figure>
+        <figure>
+          <a href="images/route-campus-plan.jpg" target="_blank" rel="noopener"><img src="images/route-campus-plan.jpg" width="1528" height="1080" alt="Campus plan of Ruhr University Bochum with the way to the Mensa building marked in yellow" loading="lazy"></a>
+          <figcaption>On campus: the way to the Mensa building.</figcaption>
+        </figure>
+      </div>
     </div>
-    <div class="notice">
-      <p><b>Please note:</b> the U35 currently does not stop at Ruhr-Universität, as the station is being renovated. Get off at Gesundheitscampus or Lennershof instead and walk to the campus.</p>
-      <p>From Gesundheitscampus there are two paths: the solid line on the map leads through a small wooded area, the dashed line runs along the street. Both end with a flight of stairs up to the path to the Mensa.</p>
-    </div>
-    <div class="map-gallery">
-      <figure>
-        <a href="images/route-city-centre.jpg" target="_blank" rel="noopener"><img src="images/route-city-centre.jpg" width="1740" height="1024" alt="Map of Bochum city centre with walking routes between Bochum Hauptbahnhof, the Holiday Inn Express hotel and the Blue Square" loading="lazy"></a>
-        <figcaption><b>Tuesday:</b> walking routes between Bochum Hauptbahnhof, the hotel and the Blue Square.</figcaption>
-      </figure>
-      <figure>
-        <a href="images/route-gesundheitscampus.jpg" target="_blank" rel="noopener"><img src="images/route-gesundheitscampus.jpg" width="1662" height="1062" alt="Map of the walking routes from the U35 stop Gesundheitscampus to the Mensa building" loading="lazy"></a>
-        <figcaption><b>Wednesday and Thursday:</b> from the U35 stop Gesundheitscampus (solid line: through the wooded area; dashed line: along the street).</figcaption>
-      </figure>
-      <figure>
-        <a href="images/route-lennershof.jpg" target="_blank" rel="noopener"><img src="images/route-lennershof.jpg" width="1144" height="1080" alt="Map of the walking route from the U35 stop Lennershof to the Mensa building" loading="lazy"></a>
-        <figcaption><b>Wednesday and Thursday:</b> from the U35 stop Lennershof.</figcaption>
-      </figure>
-      <figure>
-        <a href="images/route-campus-plan.jpg" target="_blank" rel="noopener"><img src="images/route-campus-plan.jpg" width="1528" height="1080" alt="Campus plan of Ruhr University Bochum with the way to the Mensa building marked in yellow" loading="lazy"></a>
-        <figcaption><b>On campus:</b> the way to the Mensa building on the campus plan.</figcaption>
-      </figure>
-    </div>
-    <p class="tag-note" style="margin-top:12px">Click a map to open it at full size. Within Bochum, the U35 needs a fare level A ticket from the machines at the stations; a Deutschlandticket is also valid. Map data © Google; campus plan © Ruhr University Bochum.</p>
+    <p class="tag-note" style="margin-top:12px">Click a map to open it at full size. Map data © Google; campus plan © Ruhr University Bochum.</p>
   </section>
 
   <footer>
