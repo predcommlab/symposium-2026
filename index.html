@@ -151,6 +151,33 @@
   .info-cell p{margin:0;font-size:14.5px;font-weight:500;}
   .info-cell .sub{color:var(--muted);font-size:13px;font-weight:400;margin-top:3px;}
 
+  /* getting there: one card per venue in the venue's colour; the text block
+     takes the slack so both maps and links sit on the same line */
+  .travel-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
+  .travel-card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+    padding:18px 20px;display:flex;flex-direction:column;}
+  .travel-card h4{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:0 0 6px;font-weight:600;}
+  .travel-card h3{font-family:"Space Grotesk","Inter",sans-serif;font-weight:600;font-size:17px;margin:0;
+    display:flex;align-items:center;gap:7px;color:var(--coral);}
+  .travel-card.v-blue h3,.travel-card.v-blue .dir{color:var(--blue);}
+  .travel-card .addr{font-size:13.5px;color:var(--muted);margin:3px 0 10px;}
+  .travel-card .how{flex:1;font-size:14px;line-height:1.6;color:#454b57;margin:0;}
+  .travel-card .dir{font-size:13.5px;font-weight:500;color:var(--coral);margin-top:12px;}
+  /* route maps (Helen's): one box shape for all four so the grid stays even;
+     the whole map stays visible and opens full size on click */
+  /* highlighted travel note (the explanations from Helen's maps) */
+  .notice{margin-top:14px;background:#fbeee9;border-left:4px solid var(--coral);border-radius:10px;
+    padding:12px 16px;font-size:14px;line-height:1.6;color:#3c4350;}
+  .notice p{margin:0 0 6px;}
+  .notice p:last-child{margin-bottom:0;}
+  .notice b{color:var(--coral-deep);font-weight:600;}
+  .map-gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+  .map-gallery figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);padding:10px 10px 12px;}
+  .map-gallery img{display:block;width:100%;aspect-ratio:3/2;object-fit:contain;background:var(--bg);border-radius:8px;}
+  .map-gallery figcaption{font-size:13px;color:#454b57;line-height:1.5;margin:9px 4px 0;}
+  .map-gallery figcaption b{font-weight:600;color:var(--ink);}
+
   .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 12px;}
   .gallery img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:12px;display:block;border:1px solid var(--line);}
 
@@ -180,6 +207,8 @@
        survives the narrow-screen badge hiding above */
     .plist .badge{display:inline-block;}
     .info-grid{grid-template-columns:1fr;}
+    .travel-grid{grid-template-columns:1fr;}
+    .map-gallery{grid-template-columns:1fr;}
     .gallery{grid-template-columns:1fr;}
     .speakers{grid-template-columns:1fr;}
     .speaker{display:flex;gap:16px;text-align:left;align-items:flex-start;padding:16px;}
@@ -286,7 +315,8 @@
       <div class="info-cell">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
         <h4>Accommodation</h4>
-        <p>Holiday Inn Express Bochum by IHG</p>
+        <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Holiday+Inn+Express+Bochum,+Viktoriastra%C3%9Fe+14b,+44787+Bochum" target="_blank" rel="noopener">Holiday Inn Express Bochum by IHG</a></p>
+        <p class="sub">Viktoriastraße 14b, 44787 Bochum</p>
         <p class="sub">Hotel nights are arranged for network members and their nominated ECR</p>
       </div>
       <div class="info-cell">
@@ -296,6 +326,50 @@
         <p class="sub">Free, includes lunch for all registered participants</p>
       </div>
     </div>
+  </section>
+
+  <section>
+    <h2>Getting there</h2>
+    <p class="lead">Bochum Hauptbahnhof (main station) is served by long-distance and regional trains. The nearest major airport is Düsseldorf (DUS), with direct trains to Bochum Hauptbahnhof (about 35 minutes).</p>
+    <div class="travel-grid">
+      <div class="travel-card v-blue">
+        <h4>Tuesday</h4>
+        <h3><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>Blue Square</h3>
+        <p class="addr">Kortumstraße 90, 44787 Bochum</p>
+        <p class="how">In the city centre, a short walk from Bochum Hauptbahnhof and the hotel. The entrance is in the passage between Kortumstraße and Grabenstraße.</p>
+        <a class="dir" href="https://www.google.com/maps/search/?api=1&amp;query=Blue+Square,+Kortumstra%C3%9Fe+90,+44787+Bochum" target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+      <div class="travel-card">
+        <h4>Wednesday &amp; Thursday</h4>
+        <h3><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>Ruhr University Bochum</h3>
+        <p class="addr">Mensa building, Universitätsstraße 150, 44801 Bochum</p>
+        <p class="how">From Bochum Hauptbahnhof, take the U35 towards Hustadt and get off at Gesundheitscampus or Lennershof (see the note and maps below). The rooms, Tagungsraum II on Wednesday and Tagungsraum IV on Thursday, are next to the Rote Bete restaurant above the Mensa.</p>
+        <a class="dir" href="https://www.google.com/maps/search/?api=1&amp;query=Mensa+Ruhr-Universit%C3%A4t+Bochum" target="_blank" rel="noopener">Open in Google Maps</a>
+      </div>
+    </div>
+    <div class="notice">
+      <p><b>Please note:</b> the U35 currently does not stop at Ruhr-Universität, as the station is being renovated. Get off at Gesundheitscampus or Lennershof instead and walk to the campus.</p>
+      <p>From Gesundheitscampus there are two paths: the solid line on the map leads through a small wooded area, the dashed line runs along the street. Both end with a flight of stairs up to the path to the Mensa.</p>
+    </div>
+    <div class="map-gallery">
+      <figure>
+        <a href="images/route-city-centre.jpg" target="_blank" rel="noopener"><img src="images/route-city-centre.jpg" width="1740" height="1024" alt="Map of Bochum city centre with walking routes between Bochum Hauptbahnhof, the Holiday Inn Express hotel and the Blue Square" loading="lazy"></a>
+        <figcaption><b>Tuesday:</b> walking routes between Bochum Hauptbahnhof, the hotel and the Blue Square.</figcaption>
+      </figure>
+      <figure>
+        <a href="images/route-gesundheitscampus.jpg" target="_blank" rel="noopener"><img src="images/route-gesundheitscampus.jpg" width="1662" height="1062" alt="Map of the walking routes from the U35 stop Gesundheitscampus to the Mensa building" loading="lazy"></a>
+        <figcaption><b>Wednesday and Thursday:</b> from the U35 stop Gesundheitscampus (solid line: through the wooded area; dashed line: along the street).</figcaption>
+      </figure>
+      <figure>
+        <a href="images/route-lennershof.jpg" target="_blank" rel="noopener"><img src="images/route-lennershof.jpg" width="1144" height="1080" alt="Map of the walking route from the U35 stop Lennershof to the Mensa building" loading="lazy"></a>
+        <figcaption><b>Wednesday and Thursday:</b> from the U35 stop Lennershof.</figcaption>
+      </figure>
+      <figure>
+        <a href="images/route-campus-plan.jpg" target="_blank" rel="noopener"><img src="images/route-campus-plan.jpg" width="1528" height="1080" alt="Campus plan of Ruhr University Bochum with the way to the Mensa building marked in yellow" loading="lazy"></a>
+        <figcaption><b>On campus:</b> the way to the Mensa building on the campus plan.</figcaption>
+      </figure>
+    </div>
+    <p class="tag-note" style="margin-top:12px">Click a map to open it at full size. Within Bochum, the U35 needs a fare level A ticket from the machines at the stations; a Deutschlandticket is also valid. Map data © Google; campus plan © Ruhr University Bochum.</p>
   </section>
 
   <footer>
