@@ -61,6 +61,28 @@
   .cta-sub strong{color:#fff;font-weight:600;}
 
   section{margin-bottom:38px;}
+  /* section navigation: one list; in the left gutter when the screen is wide
+     enough for it beside the 940px column, a sticky chip bar otherwise */
+  @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth;}}
+  section[id]{scroll-margin-top:70px;}
+  .toc{position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
+    margin:-12px -20px 26px;padding:10px 20px;background:var(--bg);border-bottom:1px solid var(--line);}
+  .toc::-webkit-scrollbar{display:none;}
+  .toc-h{display:none;}
+  .toc a{flex:none;font-size:13.5px;color:#454b57;text-decoration:none;background:var(--card);
+    border:1px solid var(--line);border-radius:999px;padding:5px 12px;}
+  .toc a.active{color:var(--coral-deep);border-color:var(--coral);}
+  @media (min-width:1280px){
+    section[id]{scroll-margin-top:24px;}
+    .toc{position:fixed;top:120px;right:calc(50% + 490px);width:150px;display:block;margin:0;padding:0;
+      background:none;border:none;overflow:visible;}
+    .toc-h{display:block;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+      color:var(--muted);margin:0 0 8px;}
+    .toc a{display:block;background:none;border:none;border-left:2px solid var(--line);border-radius:0;
+      padding:5px 0 5px 12px;line-height:1.35;}
+    .toc a:hover{color:var(--ink);}
+    .toc a.active{color:var(--ink);font-weight:600;border-left-color:var(--coral);}
+  }
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
     box-shadow:var(--shadow);}
 
@@ -174,7 +196,7 @@
   .map-gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
   .map-gallery figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;
     box-shadow:var(--shadow);padding:10px 10px 12px;}
-  .map-gallery img{display:block;width:100%;aspect-ratio:3/2;object-fit:contain;background:var(--bg);border-radius:8px;}
+  .map-gallery img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;background:var(--card);border-radius:8px;}
   .map-gallery figcaption{font-size:13px;color:#454b57;line-height:1.5;margin:9px 4px 0;}
   .map-gallery figcaption b{font-weight:600;color:var(--ink);}
 
@@ -236,7 +258,17 @@
     <p class="cta-sub"><strong>Registration has closed.</strong> Free to attend for registered participants.</p>
   </header>
 
-  <section>
+  <nav class="toc" aria-label="Sections">
+    <p class="toc-h">On this page</p>
+    <a href="#about">About</a>
+    <a href="#keynotes">Keynote speakers</a>
+    <a href="#venue">The venue</a>
+    <a href="#programme">Programme</a>
+    <a href="#practical">Practical information</a>
+    <a href="#travel">Getting there</a>
+  </nav>
+
+  <section id="about">
     <h2>About</h2>
     <p class="lead">Three days in Bochum bringing together the PPiMP network, the
       DFG-funded research network for predictive processing in memory and perception. Guests are warmly invited to join.</p>
@@ -248,7 +280,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="keynotes">
     <h2>Keynote speakers</h2>
     <div class="speakers">
       <div class="speaker">
@@ -281,7 +313,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="venue">
     <h2>The venue</h2>
     <div class="gallery">
       <img src="images/campus-1.jpg" alt="Ruhr University Bochum, glass facade" loading="lazy">
@@ -291,13 +323,13 @@
     <p class="tag-note">The main sessions take place on the Ruhr University Bochum campus. The Tuesday reception is at the Blue Square in the city centre.</p>
   </section>
 
-  <section>
+  <section id="programme">
     <h2>Programme</h2>
     <p class="tag-note">Tentative. Speakers and talk titles are added as they are confirmed and may be updated.</p>
     <div id="program" class="card"></div>
   </section>
 
-  <section>
+  <section id="practical">
     <h2>Practical information</h2>
     <div class="info-grid">
       <div class="info-cell">
@@ -328,7 +360,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="travel">
     <h2>Getting there</h2>
     <p class="lead">Bochum Hauptbahnhof (main station) is served by long-distance and regional trains. The nearest major airport is Düsseldorf (DUS), with direct trains to Bochum Hauptbahnhof (about 35 minutes).</p>
     <div class="travel-grid">
@@ -601,6 +633,30 @@
     else if(POSTERS_LIST.length) paint(null);  // repaint so the fallback programme carries the live poster list
   }
   render();
+
+  // Section navigation: the current section is the last one whose top has
+  // passed a line 30% down the viewport (the last section once the page bottom
+  // is reached); in the narrow chip bar, keep the active chip in view.
+  (function(){
+    const bar = document.querySelector(".toc");
+    const links = Array.from(bar.querySelectorAll("a"));
+    const secs = links.map(a => document.getElementById(a.getAttribute("href").slice(1)));
+    let current;
+    function update(){
+      const line = innerHeight * 0.3;
+      let idx = -1;
+      secs.forEach((el, i) => { if(el && el.getBoundingClientRect().top <= line) idx = i; });
+      if(innerHeight + scrollY >= document.documentElement.scrollHeight - 2) idx = secs.length - 1;
+      const a = idx >= 0 ? links[idx] : null;
+      if(a === current) return;
+      current = a;
+      links.forEach(l => l.classList.toggle("active", l === a));
+      if(a && getComputedStyle(bar).position === "sticky") bar.scrollTo({left: a.offsetLeft - 20, behavior: "smooth"});
+    }
+    addEventListener("scroll", update, {passive: true});
+    addEventListener("resize", update);
+    update();
+  })();
 </script>
 </body>
 </html>
