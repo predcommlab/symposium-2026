@@ -52,7 +52,7 @@ const PROGRAM = [
     venue: "Tagungsraum IV, Mensa building, Ruhr University Bochum",
     theme: "Closing session (with lunch packages)",
     items: [
-      {start:"09:00", end:"09:30", kind:"talk",    title:"Talk 7: Predictive processing as a mechanism underlying word form learning", who:"Florian Hintz", affil:"University of Marburg"},
+      {start:"09:00", end:"09:30", kind:"talk",    title:"Talk 7: How predictions and surprise shape our memory", who:"Andrea Greve", affil:"University of Cambridge"},
       {start:"09:30", end:"10:00", kind:"talk",    title:"Talk 8: Building predictive models in early development", who:"Moritz Köster", affil:"University of Regensburg"},
       {start:"10:00", end:"10:30", kind:"talk",    title:"Talk 9: Measuring Prediction During Natural Listening: What Can Encoding Models Tell Us?", who:"Linda Geerligs", affil:"Donders Institute"},
       {start:"10:30", end:"11:00", kind:"break",   title:"Coffee break"},

@@ -201,6 +201,14 @@
   .venue-block figure{margin:0;}
   .venue-block figure img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;
     background:var(--card);border:1px solid var(--line);border-radius:10px;}
+  /* every map says it can be enlarged: a corner label, and the zoom cursor */
+  .venue-block figure a{position:relative;display:block;cursor:zoom-in;}
+  .zoom-hint{position:absolute;right:8px;bottom:8px;display:inline-flex;align-items:center;gap:5px;
+    background:rgba(27,35,51,.8);color:#fff;font-size:12px;font-weight:500;line-height:1;
+    padding:6px 10px;border-radius:999px;pointer-events:none;}
+  .zoom-hint svg{flex:none;}
+  .zoom-hint .t-touch{display:none;}
+  @media (hover:none){.zoom-hint .t-click{display:none;}.zoom-hint .t-touch{display:inline;}}
   .venue-block figcaption{font-size:13px;color:#454b57;line-height:1.5;margin:8px 2px 0;}
 
   .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 12px;}
@@ -379,7 +387,7 @@
         <a class="dir" href="https://www.google.com/maps/search/?api=1&amp;query=Blue+Square,+Kortumstra%C3%9Fe+90,+44787+Bochum" target="_blank" rel="noopener">Open in Google Maps</a>
       </div>
         <figure>
-          <a href="images/route-city-centre.jpg" target="_blank" rel="noopener"><img src="images/route-city-centre.jpg" width="1740" height="1024" alt="Map of Bochum city centre with walking routes between Bochum Hauptbahnhof, the Holiday Inn Express hotel and the Blue Square" loading="lazy"></a>
+          <a href="images/route-city-centre.jpg" target="_blank" rel="noopener"><img src="images/route-city-centre.jpg" width="1740" height="1024" alt="Map of Bochum city centre with walking routes between Bochum Hauptbahnhof, the Holiday Inn Express hotel and the Blue Square" loading="lazy"><span class="zoom-hint"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg><span class="t-click">Click to enlarge</span><span class="t-touch">Tap to enlarge</span></span></a>
           <figcaption>Walking routes between Bochum Hauptbahnhof, the hotel and the Blue Square.</figcaption>
         </figure>
     </div>
@@ -402,20 +410,20 @@
       </div>
       <div class="vb-maps">
         <figure>
-          <a href="images/route-gesundheitscampus.jpg" target="_blank" rel="noopener"><img src="images/route-gesundheitscampus.jpg" width="1662" height="1062" alt="Map of the walking routes from the U35 stop Gesundheitscampus to the Mensa building" loading="lazy"></a>
+          <a href="images/route-gesundheitscampus.jpg" target="_blank" rel="noopener"><img src="images/route-gesundheitscampus.jpg" width="1662" height="1062" alt="Map of the walking routes from the U35 stop Gesundheitscampus to the Mensa building" loading="lazy"><span class="zoom-hint"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg><span class="t-click">Click to enlarge</span><span class="t-touch">Tap to enlarge</span></span></a>
           <figcaption>From the U35 stop Gesundheitscampus (solid line: through the wooded area; dashed line: along the street).</figcaption>
         </figure>
         <figure>
-          <a href="images/route-lennershof.jpg" target="_blank" rel="noopener"><img src="images/route-lennershof.jpg" width="1144" height="1080" alt="Map of the walking route from the U35 stop Lennershof to the Mensa building" loading="lazy"></a>
+          <a href="images/route-lennershof.jpg" target="_blank" rel="noopener"><img src="images/route-lennershof.jpg" width="1144" height="1080" alt="Map of the walking route from the U35 stop Lennershof to the Mensa building" loading="lazy"><span class="zoom-hint"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg><span class="t-click">Click to enlarge</span><span class="t-touch">Tap to enlarge</span></span></a>
           <figcaption>From the U35 stop Lennershof.</figcaption>
         </figure>
         <figure>
-          <a href="images/route-campus-plan.jpg" target="_blank" rel="noopener"><img src="images/route-campus-plan.jpg" width="1528" height="1080" alt="Campus plan of Ruhr University Bochum with the way to the Mensa building marked in yellow" loading="lazy"></a>
+          <a href="images/route-campus-plan.jpg" target="_blank" rel="noopener"><img src="images/route-campus-plan.jpg" width="1528" height="1080" alt="Campus plan of Ruhr University Bochum with the way to the Mensa building marked in yellow" loading="lazy"><span class="zoom-hint"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg><span class="t-click">Click to enlarge</span><span class="t-touch">Tap to enlarge</span></span></a>
           <figcaption>On campus: the way to the Mensa building.</figcaption>
         </figure>
       </div>
     </div>
-    <p class="tag-note" style="margin-top:12px">Click a map to open it at full size. Map data © Google; campus plan © Ruhr University Bochum.</p>
+    <p class="tag-note" style="margin-top:12px">Map data © Google; campus plan © Ruhr University Bochum.</p>
   </section>
 
   <footer>
