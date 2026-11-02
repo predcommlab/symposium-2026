@@ -335,7 +335,7 @@
   </header>
 
   <nav class="toc" aria-label="Sections">
-    <a href="#photos">Photos</a>
+    <a href="#photos">Symposium photos</a>
     <a href="#about">About</a>
     <a href="#keynotes">Keynote speakers</a>
     <a href="#venue">The venue</a>
@@ -345,9 +345,9 @@
   </nav>
 
   <section id="photos">
-    <h2>Photos</h2>
+    <h2>Symposium photos</h2>
     <div class="ph-wrap">
-      <div class="ph-strip" id="ph-strip" tabindex="0" role="group" aria-label="Photos from the meeting"></div>
+      <div class="ph-strip" id="ph-strip" tabindex="0" role="group" aria-label="Photos from the symposium"></div>
       <button type="button" class="ph-arrow ph-prev" id="ph-prev" aria-label="Previous photos" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
       <button type="button" class="ph-arrow ph-next" id="ph-next" aria-label="More photos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
@@ -355,8 +355,8 @@
       <div class="ph-days" id="ph-days"></div>
       <div class="ph-now" id="ph-count"></div>
     </div>
-    <p class="tag-note ph-foot"><span class="t-click">Click</span><span class="t-touch">Tap</span> a photo to enlarge it. Would you like a photo removed? Please write to <span class="eaddr" data-u="predcog" data-d="rub.de">predcog [at] rub.de</span>.</p>
-    <div class="notice" id="ph-preview" hidden><p><b>Preview:</b> these are sample images. The photos from the meeting will follow.</p></div>
+    <p class="tag-note ph-foot"><span class="t-click">Click</span><span class="t-touch">Tap</span> a photo to enlarge it.</p>
+    <div class="notice" id="ph-preview" hidden><p><b>Preview:</b> these are sample images. The photos from the symposium will follow.</p></div>
   </section>
 
   <section id="about">
@@ -881,11 +881,6 @@
       a.scrollIntoView({block: "nearest", inline: "nearest"});
     });
     addEventListener("popstate", () => { if(lb.open) lb.close(); });
-
-    document.querySelectorAll(".eaddr").forEach(el => {
-      const addr = el.dataset.u + "@" + el.dataset.d;
-      el.innerHTML = '<a href="mailto:' + addr + '">' + addr + '</a>';
-    });
   })();
 </script>
 </body>
