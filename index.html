@@ -229,25 +229,42 @@
   .speaker .talk{font-size:14.5px;color:var(--ink);line-height:1.5;margin:0;}
   .speaker .talk.tbc{font-size:14px;color:var(--muted);font-style:italic;}
 
-  /* photos: justified rows. Each item grows by its aspect ratio, so a row shares
-     one height and every photo keeps its proportions: no cropping (which cuts
-     off heads) and no letterboxing. Groups reuse the programme's day structure. */
+  /* photos: one sideways-scrolling ribbon. All photos share one height and keep
+     their proportions; the next photo peeks in at the edge, which is what says
+     the ribbon continues. The day buttons replace per-day headings. */
   #program{margin-top:14px;}
-  .ph-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;}
-  .ph-zip{font-size:13.5px;font-weight:500;}
   #ph-preview{margin-bottom:14px;}
   .ph-foot{margin:12px 0 0;}
-  .ph-day{padding-bottom:22px;}
-  .ph-day .dhead{margin-bottom:12px;}
-  .ph-day.v-blue .date{color:var(--blue);}
-  .ph-grid{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;}
-  .ph-grid::after{content:"";flex-grow:999;}
-  .ph{margin:0;min-width:0;flex-grow:calc(var(--ar) * 100);flex-basis:calc(var(--ar) * 168px);}
-  .ph a{display:block;cursor:zoom-in;border-radius:6px;}
+  .ph-card{padding:16px 0 18px;overflow:hidden;}
+  .ph-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 14px;padding:0 22px 14px;}
+  .ph-days{display:flex;flex-wrap:wrap;gap:6px;}
+  .ph-chip{font:inherit;font-size:13.5px;color:#454b57;background:var(--card);border:1px solid var(--line);
+    border-radius:999px;padding:5px 12px;cursor:pointer;}
+  .ph-chip:hover{border-color:#c9c8c0;}
+  .ph-chip.active{color:var(--coral-deep);border-color:var(--coral);}
+  .ph-chip.v-blue.active{color:var(--blue);border-color:var(--blue);}
+  .ph-now{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .ph-where{color:var(--coral);font-weight:500;margin-right:10px;}
+  .ph-where.v-blue{color:var(--blue);}
+  .ph-wrap{--ph-h:clamp(170px,46vw,400px);position:relative;}
+  .ph-strip{position:relative;display:flex;align-items:flex-start;gap:10px;overflow-x:auto;padding:0 22px;
+    scroll-padding-inline:22px;scroll-snap-type:x mandatory;scrollbar-width:none;}
+  .ph-strip::-webkit-scrollbar{display:none;}
+  .ph-strip:focus-visible{outline:2px solid var(--coral);outline-offset:-2px;}
+  .ph{flex:none;margin:0;width:calc(var(--ph-h) * var(--ar));scroll-snap-align:start;}
+  .ph a{display:block;cursor:zoom-in;border-radius:8px;}
   .ph a:focus-visible{outline:2px solid var(--coral);outline-offset:2px;}
-  .ph img{display:block;width:100%;height:auto;aspect-ratio:var(--ar);background:#eceae5;border-radius:6px;transition:filter .15s ease;}
-  .ph a:hover img{filter:brightness(.9);}
-  .ph figcaption{font-size:12.5px;line-height:1.4;color:#454b57;margin-top:5px;}
+  .ph img{display:block;width:100%;height:var(--ph-h);object-fit:cover;background:#eceae5;border-radius:8px;transition:filter .15s ease;}
+  .ph a:hover img{filter:brightness(.92);}
+  .ph figcaption{font-size:13px;line-height:1.4;color:#454b57;margin-top:6px;}
+  .ph-arrow{position:absolute;top:calc(var(--ph-h) / 2 - 22px);display:flex;align-items:center;justify-content:center;width:44px;height:44px;
+    padding:0;border:1px solid var(--line);border-radius:50%;background:var(--card);color:var(--navy);box-shadow:var(--shadow);cursor:pointer;}
+  .ph-arrow[hidden]{display:none;}
+  .ph-arrow:hover{background:#f4f4f2;}
+  .ph-arrow:focus-visible{outline:2px solid var(--coral);outline-offset:2px;}
+  .ph-prev{left:10px;}
+  .ph-next{right:10px;}
+  @media (hover:none){.ph-arrow{display:none;}}
 
   /* photo viewer */
   html.lb-open{overflow:hidden;}
@@ -260,7 +277,6 @@
   .lb-bar{display:flex;align-items:baseline;justify-content:center;gap:16px;flex-wrap:wrap;padding:8px 68px 14px;
     font-size:13.5px;line-height:1.4;min-height:42px;text-align:center;}
   .lb-count{color:#9fb0d0;font-variant-numeric:tabular-nums;}
-  .lb-dl{color:#f2a58e;}
   .lb-btn{position:absolute;display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:0;
     border-radius:50%;background:rgba(255,255,255,.13);color:#fff;cursor:pointer;}
   .lb-btn:hover{background:rgba(255,255,255,.26);}
@@ -287,8 +303,8 @@
     .facts dd{margin-bottom:8px;}
     .gallery{grid-template-columns:1fr;}
     .speakers{grid-template-columns:1fr;}
-    .ph-day{padding:18px 16px;}
-    .ph{flex-basis:calc(var(--ar) * 88px);}
+    .ph-bar{padding:0 16px 12px;}
+    .ph-strip{padding:0 16px;scroll-padding-inline:16px;gap:8px;}
     .lb-stage img{inset:8px 8px 4px;width:calc(100% - 16px);height:calc(100% - 12px);}
     .lb-bar{padding:8px 56px 12px;}
     .lb-prev,.lb-next{top:auto;bottom:8px;}
@@ -329,13 +345,20 @@
   </nav>
 
   <section id="photos">
-    <div class="ph-head">
-      <h2>Photos</h2>
-      <a class="ph-zip" id="ph-zip" download>Download all photos</a>
-    </div>
-    <p class="tag-note"><span class="t-click">Click</span><span class="t-touch">Tap</span> a photo to enlarge it and browse through all of them.</p>
+    <h2>Photos</h2>
+    <p class="tag-note"><span class="t-click">Scroll through the photos and click one to enlarge it.</span><span class="t-touch">Swipe through the photos and tap one to enlarge it.</span></p>
     <div class="notice" id="ph-preview" hidden><p><b>Preview:</b> these are placeholder images. The photos from the meeting will follow.</p></div>
-    <div id="photo-gallery" class="card"></div>
+    <div class="card ph-card" id="ph-card">
+      <div class="ph-bar">
+        <div class="ph-days" id="ph-days"></div>
+        <div class="ph-now"><span class="ph-where" id="ph-where"></span><span id="ph-count"></span></div>
+      </div>
+      <div class="ph-wrap">
+        <div class="ph-strip" id="ph-strip" tabindex="0" role="group" aria-label="Photos from the meeting"></div>
+        <button type="button" class="ph-arrow ph-prev" id="ph-prev" aria-label="Previous photos" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button type="button" class="ph-arrow ph-next" id="ph-next" aria-label="More photos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
     <p class="tag-note ph-foot">Would you like a photo removed? Please write to <span class="eaddr" data-u="predcog" data-d="rub.de">predcog [at] rub.de</span>.</p>
   </section>
 
@@ -494,7 +517,7 @@
 
 <dialog class="lb" id="lb" aria-label="Photo viewer">
   <div class="lb-stage"><img id="lb-img" alt=""></div>
-  <div class="lb-bar"><span class="lb-count" id="lb-count"></span><span class="lb-cap" id="lb-cap"></span><a class="lb-dl" id="lb-dl" download>Download</a></div>
+  <div class="lb-bar"><span class="lb-count" id="lb-count"></span><span class="lb-cap" id="lb-cap"></span></div>
   <button type="button" class="lb-btn lb-close" aria-label="Close"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   <button type="button" class="lb-btn lb-prev" aria-label="Previous photo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
   <button type="button" class="lb-btn lb-next" aria-label="Next photo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -763,19 +786,70 @@
     const alt = (p, i) => "Photo " + (i + 1) + " of " + n + " from the symposium" + (p.day ? ", " + p.day : "") + (p.cap ? ": " + p.cap : "");
 
     document.getElementById("ph-preview").hidden = !PHOTOS_ARE_PLACEHOLDERS;
-    const zip = document.getElementById("ph-zip");
-    zip.href = PHOTOS_ZIP.file;
-    zip.textContent = "Download all photos (ZIP, " + PHOTOS_ZIP.mb + " MB)";
 
-    const days = [...new Set(PHOTOS.map(p => p.day))];
-    document.getElementById("photo-gallery").innerHTML = days.map(day =>
-      '<div class="day ph-day' + (day === "Tuesday" ? " v-blue" : "") + '">' +
-      (day ? '<div class="dhead"><h3>' + day + '</h3><span class="date">' + WHEN[day] + '</span></div>' : "") +
-      '<div class="ph-grid">' + PHOTOS.map((p, i) => p.day !== day ? "" :
-        '<figure class="ph" style="--ar:' + (p.w / p.h).toFixed(4) + '">' +
-        '<a href="' + large(p) + '" data-i="' + i + '" target="_blank" rel="noopener">' +
-        '<img src="' + thumb(p) + '" width="' + p.w + '" height="' + p.h + '" alt="' + esc(alt(p, i)).replace(/"/g, "&quot;") + '" loading="lazy"></a>' +
-        (p.cap ? '<figcaption>' + esc(p.cap) + '</figcaption>' : "") + '</figure>').join("") + '</div></div>').join("");
+    const strip = document.getElementById("ph-strip");
+    strip.innerHTML = PHOTOS.map((p, i) =>
+      '<figure class="ph" style="--ar:' + (p.w / p.h).toFixed(4) + '">' +
+      '<a href="' + large(p) + '" data-i="' + i + '" target="_blank" rel="noopener">' +
+      '<img src="' + thumb(p) + '" width="' + p.w + '" height="' + p.h + '" alt="' + esc(alt(p, i)).replace(/"/g, "&quot;") + '"' + (i > 3 ? ' loading="lazy"' : "") + '></a>' +
+      (p.cap ? '<figcaption>' + esc(p.cap) + '</figcaption>' : "") + '</figure>').join("");
+
+    const days = [...new Set(PHOTOS.map(p => p.day))].filter(Boolean);
+    const daysBox = document.getElementById("ph-days");
+    if(days.length > 1) daysBox.innerHTML = days.map(d =>
+      '<button type="button" class="ph-chip' + (d === "Tuesday" ? " v-blue" : "") + '" data-day="' + d + '">' + d + '</button>').join("");
+
+    const figs = Array.from(strip.children);
+    const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const move = left => strip.scrollTo({left: left, behavior: calm ? "auto" : "smooth"});
+    const stops = () => figs.map(f => f.offsetLeft - parseFloat(getComputedStyle(strip).paddingLeft));
+    const atEnd = () => strip.scrollLeft >= strip.scrollWidth - strip.clientWidth - 2;
+    // Near the end the last photos cannot reach the left edge, so the steps go
+    // by position rather than by photo number.
+    function step(d){
+      const x = strip.scrollLeft, all = stops();
+      const t = d > 0 ? all.find(l => l > x + 2) : all.reverse().find(l => l < x - 2);
+      if(t !== undefined) move(t);
+    }
+    function showPosition(){
+      const x = strip.scrollLeft, all = stops();
+      let k = 0;
+      all.forEach((l, i) => { if(Math.abs(l - x) < Math.abs(all[k] - x)) k = i; });
+      if(atEnd()) k = n - 1;
+      const day = PHOTOS[k].day;
+      document.getElementById("ph-count").textContent = (k + 1) + " / " + n;
+      const where = document.getElementById("ph-where");
+      where.textContent = WHEN[day] || "";
+      where.classList.toggle("v-blue", day === "Tuesday");
+      daysBox.querySelectorAll(".ph-chip").forEach(c => c.classList.toggle("active", c.dataset.day === day));
+      document.getElementById("ph-prev").hidden = x <= 2;
+      document.getElementById("ph-next").hidden = atEnd();
+    }
+    strip.addEventListener("scroll", showPosition, {passive: true});
+    addEventListener("resize", showPosition);
+    document.getElementById("ph-prev").addEventListener("click", () => step(-1));
+    document.getElementById("ph-next").addEventListener("click", () => step(1));
+    daysBox.addEventListener("click", e => {
+      const c = e.target.closest(".ph-chip");
+      if(c) move(stops()[PHOTOS.findIndex(p => p.day === c.dataset.day)]);
+    });
+    showPosition();
+
+    // Moves on by itself until the visitor touches it; pauses under the mouse and
+    // out of view; never runs for people who asked for reduced motion.
+    const card = document.getElementById("ph-card");
+    let timer = null, hovering = false, inView = false;
+    const stopAuto = () => { clearInterval(timer); timer = null; };
+    if(!calm && strip.scrollWidth > strip.clientWidth){
+      timer = setInterval(() => {
+        if(hovering || !inView || document.hidden || document.getElementById("lb").open) return;
+        if(atEnd()) move(0); else step(1);
+      }, 4500);
+      new IntersectionObserver(es => { inView = es[0].isIntersecting; }, {threshold: .5}).observe(strip);
+      card.addEventListener("mouseenter", () => { hovering = true; });
+      card.addEventListener("mouseleave", () => { hovering = false; });
+      ["pointerdown", "wheel", "touchstart", "keydown"].forEach(ev => card.addEventListener(ev, stopAuto, {passive: true}));
+    }
 
     const lb = document.getElementById("lb"), img = document.getElementById("lb-img");
     let cur = 0;
@@ -787,9 +861,6 @@
       img.alt = alt(p, cur);
       document.getElementById("lb-count").textContent = (cur + 1) + " / " + n;
       document.getElementById("lb-cap").textContent = p.cap || "";
-      const dl = document.getElementById("lb-dl");
-      dl.href = large(p);
-      dl.setAttribute("download", "symposium-2026-" + String(cur + 1).padStart(2, "0") + ".jpg");
       [cur + 1, cur - 1].forEach(j => { new Image().src = large(PHOTOS[(j + n) % n]); });
     }
     function open(i){
@@ -831,7 +902,7 @@
       if(history.state && history.state.lb) history.back();
       const a = section.querySelector('a[data-i="' + cur + '"]');
       a.focus({preventScroll: true});
-      a.scrollIntoView({block: "nearest"});
+      a.scrollIntoView({block: "nearest", inline: "nearest"});
     });
     addEventListener("popstate", () => { if(lb.open) lb.close(); });
 
