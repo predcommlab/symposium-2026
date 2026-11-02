@@ -2,18 +2,16 @@
  * To change a caption, edit captions.csv in the originals folder and rerun it. */
 const PHOTOS_ARE_PLACEHOLDERS = true;
 const PHOTOS = [
-  {"day": "Tuesday", "file": "meeting-01", "w": 2000, "h": 1333, "cap": "Opening"},
-  {"day": "Tuesday", "file": "meeting-02", "w": 2000, "h": 1333},
-  {"day": "Tuesday", "file": "meeting-03", "w": 1333, "h": 2000, "cap": "Keynote"},
-  {"day": "Tuesday", "file": "meeting-04", "w": 2000, "h": 1125, "cap": "Poster session"},
-  {"day": "Tuesday", "file": "meeting-05", "w": 2000, "h": 1333},
-  {"day": "Wednesday", "file": "meeting-06", "w": 2000, "h": 1333, "cap": "Talks"},
-  {"day": "Wednesday", "file": "meeting-07", "w": 2000, "h": 2000},
-  {"day": "Wednesday", "file": "meeting-08", "w": 2000, "h": 1333},
-  {"day": "Wednesday", "file": "meeting-09", "w": 2000, "h": 1125, "cap": "Walk in the Botanical Garden"},
-  {"day": "Wednesday", "file": "meeting-10", "w": 1333, "h": 2000},
-  {"day": "Wednesday", "file": "meeting-11", "w": 2000, "h": 1500, "cap": "General discussion"},
-  {"day": "Thursday", "file": "meeting-12", "w": 2000, "h": 1333},
-  {"day": "Thursday", "file": "meeting-13", "w": 2000, "h": 1125, "cap": "Closing discussion"},
-  {"day": "Thursday", "file": "meeting-14", "w": 1333, "h": 2000}
+  {"day": "Tuesday", "file": "meeting-01", "w": 1800, "h": 1197, "cap": "Ruhr University Bochum"},
+  {"day": "Tuesday", "file": "meeting-02", "w": 1100, "h": 731},
+  {"day": "Tuesday", "file": "meeting-03", "w": 1100, "h": 731, "cap": "View over the Bochum hills"},
+  {"day": "Tuesday", "file": "meeting-04", "w": 1100, "h": 731},
+  {"day": "Wednesday", "file": "meeting-05", "w": 1100, "h": 731},
+  {"day": "Wednesday", "file": "meeting-06", "w": 1100, "h": 731, "cap": "Campus buildings"},
+  {"day": "Wednesday", "file": "meeting-07", "w": 1800, "h": 1197},
+  {"day": "Wednesday", "file": "meeting-08", "w": 1100, "h": 731},
+  {"day": "Wednesday", "file": "meeting-09", "w": 1100, "h": 731},
+  {"day": "Thursday", "file": "meeting-10", "w": 1100, "h": 731},
+  {"day": "Thursday", "file": "meeting-11", "w": 1800, "h": 1197},
+  {"day": "Thursday", "file": "meeting-12", "w": 1100, "h": 731, "cap": "Glass facade on campus"}
 ];
