@@ -14,6 +14,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
 <title>Predictive Processing Network Symposium 2026</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -207,8 +208,8 @@
     background:rgba(27,35,51,.8);color:#fff;font-size:12px;font-weight:500;line-height:1;
     padding:6px 10px;border-radius:999px;pointer-events:none;}
   .zoom-hint svg{flex:none;}
-  .zoom-hint .t-touch{display:none;}
-  @media (hover:none){.zoom-hint .t-click{display:none;}.zoom-hint .t-touch{display:inline;}}
+  .t-touch{display:none;}
+  @media (hover:none){.t-click{display:none;}.t-touch{display:inline;}}
   .venue-block figcaption{font-size:13px;color:#454b57;line-height:1.5;margin:8px 2px 0;}
 
   .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 12px;}
@@ -228,6 +229,46 @@
   .speaker .talk{font-size:14.5px;color:var(--ink);line-height:1.5;margin:0;}
   .speaker .talk.tbc{font-size:14px;color:var(--muted);font-style:italic;}
 
+  /* photos: justified rows. Each item grows by its aspect ratio, so a row shares
+     one height and every photo keeps its proportions: no cropping (which cuts
+     off heads) and no letterboxing. Groups reuse the programme's day structure. */
+  #program{margin-top:14px;}
+  .ph-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .ph-zip{font-size:13.5px;font-weight:500;}
+  #ph-preview{margin-bottom:14px;}
+  .ph-foot{margin:12px 0 0;}
+  .ph-day{padding-bottom:22px;}
+  .ph-day .dhead{margin-bottom:12px;}
+  .ph-day.v-blue .date{color:var(--blue);}
+  .ph-grid{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;}
+  .ph-grid::after{content:"";flex-grow:999;}
+  .ph{margin:0;min-width:0;flex-grow:calc(var(--ar) * 100);flex-basis:calc(var(--ar) * 168px);}
+  .ph a{display:block;cursor:zoom-in;border-radius:6px;}
+  .ph a:focus-visible{outline:2px solid var(--coral);outline-offset:2px;}
+  .ph img{display:block;width:100%;height:auto;aspect-ratio:var(--ar);background:#eceae5;border-radius:6px;transition:filter .15s ease;}
+  .ph a:hover img{filter:brightness(.9);}
+  .ph figcaption{font-size:12.5px;line-height:1.4;color:#454b57;margin-top:5px;}
+
+  /* photo viewer */
+  html.lb-open{overflow:hidden;}
+  dialog.lb{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;
+    background:#10141f;color:#eef1f8;overflow:hidden;}
+  dialog.lb[open]{display:flex;flex-direction:column;}
+  .lb-stage{position:relative;flex:1;min-height:0;}
+  .lb-stage img{position:absolute;inset:14px 68px 4px;width:calc(100% - 136px);height:calc(100% - 18px);object-fit:contain;
+    background:center/contain no-repeat;}
+  .lb-bar{display:flex;align-items:baseline;justify-content:center;gap:16px;flex-wrap:wrap;padding:8px 68px 14px;
+    font-size:13.5px;line-height:1.4;min-height:42px;text-align:center;}
+  .lb-count{color:#9fb0d0;font-variant-numeric:tabular-nums;}
+  .lb-dl{color:#f2a58e;}
+  .lb-btn{position:absolute;display:flex;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:0;
+    border-radius:50%;background:rgba(255,255,255,.13);color:#fff;cursor:pointer;}
+  .lb-btn:hover{background:rgba(255,255,255,.26);}
+  .lb-btn:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+  .lb-close{top:12px;right:12px;}
+  .lb-prev{left:12px;top:calc(50% - 44px);}
+  .lb-next{right:12px;top:calc(50% - 44px);}
+
   footer{border-top:1px solid var(--line);padding-top:20px;margin-top:8px;
     display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
   .foot-line{font-size:14px;}.foot-line b{font-weight:600;}
@@ -246,6 +287,11 @@
     .facts dd{margin-bottom:8px;}
     .gallery{grid-template-columns:1fr;}
     .speakers{grid-template-columns:1fr;}
+    .ph-day{padding:18px 16px;}
+    .ph{flex-basis:calc(var(--ar) * 88px);}
+    .lb-stage img{inset:8px 8px 4px;width:calc(100% - 16px);height:calc(100% - 12px);}
+    .lb-bar{padding:8px 56px 12px;}
+    .lb-prev,.lb-next{top:auto;bottom:8px;}
     .speaker{display:flex;gap:16px;text-align:left;align-items:flex-start;padding:16px;}
     .speaker img{width:96px;height:128px;margin:0;flex:none;}
     /* fill the row, so the rule above the talk title is the same width on
@@ -268,10 +314,12 @@
       <span class="pill">In person + poster session</span>
     </div>
     <p class="hosts">Hosted by Andrea Greve and Helen Blank</p>
-    <p class="cta-sub"><strong>Registration has closed.</strong> Free to attend for registered participants.</p>
+    <a class="cta" href="#photos">View the photos</a>
+    <p class="cta-sub"><strong>Thank you to everyone who joined us in Bochum.</strong></p>
   </header>
 
   <nav class="toc" aria-label="Sections">
+    <a href="#photos">Photos</a>
     <a href="#about">About</a>
     <a href="#keynotes">Keynote speakers</a>
     <a href="#venue">The venue</a>
@@ -280,10 +328,21 @@
     <a href="#travel">Getting there</a>
   </nav>
 
+  <section id="photos">
+    <div class="ph-head">
+      <h2>Photos</h2>
+      <a class="ph-zip" id="ph-zip" download>Download all photos</a>
+    </div>
+    <p class="tag-note"><span class="t-click">Click</span><span class="t-touch">Tap</span> a photo to enlarge it and browse through all of them.</p>
+    <div class="notice" id="ph-preview" hidden><p><b>Preview:</b> these are placeholder images. The photos from the meeting will follow.</p></div>
+    <div id="photo-gallery" class="card"></div>
+    <p class="tag-note ph-foot">Would you like a photo removed? Please write to <span class="eaddr" data-u="predcog" data-d="rub.de">predcog [at] rub.de</span>.</p>
+  </section>
+
   <section id="about">
     <h2>About</h2>
     <p class="lead">Three days in Bochum bringing together the PPiMP network, the
-      DFG-funded research network for predictive processing in memory and perception. Guests are warmly invited to join.</p>
+      DFG-funded research network for predictive processing in memory and perception.</p>
     <p class="lead">The programme features talks, keynotes, and discussions. It opens
       with a welcome reception and a poster session on Tuesday evening and closes on Thursday at midday.</p>
     <div class="venuekey">
@@ -337,7 +396,6 @@
 
   <section id="programme">
     <h2>Programme</h2>
-    <p class="tag-note">Tentative. Speakers and talk titles are added as they are confirmed and may be updated.</p>
     <div id="program" class="card"></div>
   </section>
 
@@ -434,7 +492,16 @@
 
 </div>
 
+<dialog class="lb" id="lb" aria-label="Photo viewer">
+  <div class="lb-stage"><img id="lb-img" alt=""></div>
+  <div class="lb-bar"><span class="lb-count" id="lb-count"></span><span class="lb-cap" id="lb-cap"></span><a class="lb-dl" id="lb-dl" download>Download</a></div>
+  <button type="button" class="lb-btn lb-close" aria-label="Close"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button type="button" class="lb-btn lb-prev" aria-label="Previous photo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button type="button" class="lb-btn lb-next" aria-label="Next photo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+</dialog>
+
 <script src="program.js"></script>
+<script src="photos.js"></script>
 <script>
   // To let Helen & Andrea edit the programme in a Google Sheet, paste the
   // sheet's "Publish to web" CSV link here. Empty = use the built-in program.js.
@@ -678,6 +745,100 @@
     addEventListener("scroll", update, {passive: true});
     addEventListener("resize", update);
     update();
+  })();
+
+  // Photos: gallery from photos.js, viewed in a <dialog>. Thumbnails are plain
+  // links to the large file, so modified clicks and a failed script still work.
+  (function(){
+    const section = document.getElementById("photos");
+    if(typeof PHOTOS === "undefined" || !PHOTOS.length){
+      section.hidden = true;
+      document.querySelectorAll('a[href="#photos"]').forEach(a => { a.hidden = true; });
+      return;
+    }
+    const WHEN = {Tuesday: "6 October · Blue Square", Wednesday: "7 October · Ruhr University Bochum", Thursday: "8 October · Ruhr University Bochum"};
+    const n = PHOTOS.length;
+    const large = p => "images/photos/" + p.file + ".jpg";
+    const thumb = p => "images/photos/" + p.file + "-thumb.jpg";
+    const alt = (p, i) => "Photo " + (i + 1) + " of " + n + " from the symposium" + (p.day ? ", " + p.day : "") + (p.cap ? ": " + p.cap : "");
+
+    document.getElementById("ph-preview").hidden = !PHOTOS_ARE_PLACEHOLDERS;
+    const zip = document.getElementById("ph-zip");
+    zip.href = PHOTOS_ZIP.file;
+    zip.textContent = "Download all photos (ZIP, " + PHOTOS_ZIP.mb + " MB)";
+
+    const days = [...new Set(PHOTOS.map(p => p.day))];
+    document.getElementById("photo-gallery").innerHTML = days.map(day =>
+      '<div class="day ph-day' + (day === "Tuesday" ? " v-blue" : "") + '">' +
+      (day ? '<div class="dhead"><h3>' + day + '</h3><span class="date">' + WHEN[day] + '</span></div>' : "") +
+      '<div class="ph-grid">' + PHOTOS.map((p, i) => p.day !== day ? "" :
+        '<figure class="ph" style="--ar:' + (p.w / p.h).toFixed(4) + '">' +
+        '<a href="' + large(p) + '" data-i="' + i + '" target="_blank" rel="noopener">' +
+        '<img src="' + thumb(p) + '" width="' + p.w + '" height="' + p.h + '" alt="' + esc(alt(p, i)).replace(/"/g, "&quot;") + '" loading="lazy"></a>' +
+        (p.cap ? '<figcaption>' + esc(p.cap) + '</figcaption>' : "") + '</figure>').join("") + '</div></div>').join("");
+
+    const lb = document.getElementById("lb"), img = document.getElementById("lb-img");
+    let cur = 0;
+    function show(i){
+      cur = (i + n) % n;
+      const p = PHOTOS[cur];
+      img.style.backgroundImage = 'url("' + thumb(p) + '")';   // sharpens when the large file arrives
+      img.src = large(p);
+      img.alt = alt(p, cur);
+      document.getElementById("lb-count").textContent = (cur + 1) + " / " + n;
+      document.getElementById("lb-cap").textContent = p.cap || "";
+      const dl = document.getElementById("lb-dl");
+      dl.href = large(p);
+      dl.setAttribute("download", "symposium-2026-" + String(cur + 1).padStart(2, "0") + ".jpg");
+      [cur + 1, cur - 1].forEach(j => { new Image().src = large(PHOTOS[(j + n) % n]); });
+    }
+    function open(i){
+      show(i);
+      document.documentElement.classList.add("lb-open");
+      lb.showModal();
+      history.pushState({lb: 1}, "");                          // so the phone's Back closes the viewer
+    }
+    section.addEventListener("click", e => {
+      const a = e.target.closest("a[data-i]");
+      if(!a || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      open(+a.dataset.i);
+    });
+    lb.querySelector(".lb-close").addEventListener("click", () => lb.close());
+    lb.querySelector(".lb-prev").addEventListener("click", () => show(cur - 1));
+    lb.querySelector(".lb-next").addEventListener("click", () => show(cur + 1));
+    lb.addEventListener("keydown", e => {
+      if(e.key === "ArrowLeft") show(cur - 1);
+      if(e.key === "ArrowRight") show(cur + 1);
+    });
+    // A click outside the photo itself closes; the img box is larger than the
+    // contained picture, so the picture's rectangle is worked out from its ratio.
+    lb.querySelector(".lb-stage").addEventListener("click", e => {
+      const p = PHOTOS[cur], r = img.getBoundingClientRect(), k = Math.min(r.width / p.w, r.height / p.h);
+      const inside = Math.abs(e.clientX - (r.left + r.width / 2)) <= p.w * k / 2 && Math.abs(e.clientY - (r.top + r.height / 2)) <= p.h * k / 2;
+      if(!inside) lb.close();
+    });
+    let startX = null;
+    lb.addEventListener("touchstart", e => { startX = e.touches.length === 1 ? e.touches[0].clientX : null; }, {passive: true});
+    lb.addEventListener("touchend", e => {
+      if(startX === null || (window.visualViewport && visualViewport.scale > 1.01)) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if(Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1));
+      startX = null;
+    });
+    lb.addEventListener("close", () => {
+      document.documentElement.classList.remove("lb-open");
+      if(history.state && history.state.lb) history.back();
+      const a = section.querySelector('a[data-i="' + cur + '"]');
+      a.focus({preventScroll: true});
+      a.scrollIntoView({block: "nearest"});
+    });
+    addEventListener("popstate", () => { if(lb.open) lb.close(); });
+
+    document.querySelectorAll(".eaddr").forEach(el => {
+      const addr = el.dataset.u + "@" + el.dataset.d;
+      el.innerHTML = '<a href="mailto:' + addr + '">' + addr + '</a>';
+    });
   })();
 </script>
 </body>
