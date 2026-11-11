@@ -62,9 +62,10 @@
   .cta-sub strong{color:#fff;font-weight:600;}
 
   section{margin-bottom:38px;}
-  /* PredictIndex: the form as the main action, PredictIndex's own published-only view beside it */
-  .pi-links{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin:4px 0 14px;}
-  .pi-alt{font-size:15px;font-weight:500;}
+  /* PredictIndex: two actions, the form and PredictIndex's own published-only view */
+  .pi-links{display:flex;flex-wrap:wrap;gap:10px 12px;margin-top:2px;}
+  .cta.ghost{background:var(--card);color:var(--ink);border:1px solid #d8d7d0;padding:11px 21px;}
+  .cta.ghost:hover{box-shadow:0 4px 12px rgba(20,28,50,.1);}
   /* section navigation: one list; in the left gutter when the screen is wide
      enough for it beside the 940px column, a sticky chip bar otherwise */
   @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth;}}
@@ -308,6 +309,9 @@
     .facts dd{margin-bottom:8px;}
     .gallery{grid-template-columns:1fr;}
     .speakers{grid-template-columns:1fr;}
+    /* stacked, and both as wide as the longer one */
+    .pi-links{flex-direction:column;align-items:stretch;width:max-content;max-width:100%;}
+    .pi-links .cta{text-align:center;}
     .lb-stage img{inset:8px 8px 4px;width:calc(100% - 16px);height:calc(100% - 12px);}
     .lb-bar{padding:8px 56px 12px;}
     .lb-prev,.lb-next{top:auto;bottom:8px;}
@@ -365,12 +369,11 @@
 
   <section id="predictindex">
     <h2>PredictIndex</h2>
-    <p class="lead"><a href="https://predcommlab.github.io/network-datasets/" target="_blank" rel="noopener">PredictIndex</a> is a searchable directory of predictive processing studies and datasets from the network. You can add your own studies with the form below. You can change your entry later, and other participants cannot see or change it.</p>
+    <p class="lead">The network's searchable directory of predictive processing studies and datasets.<br>Everyone interested is welcome to add their own studies.</p>
     <div class="pi-links">
       <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLScZ5s-y-Vw1pWGzYse1Ns0ZZnWvLxaNG9NpUlqrsu2GuPuIMA/viewform" target="_blank" rel="noopener">Add your study</a>
-      <a class="pi-alt" href="https://predcommlab.github.io/network-datasets/?status=Published" target="_blank" rel="noopener">See the published studies</a>
+      <a class="cta ghost" href="https://predcommlab.github.io/network-datasets/?status=Published" target="_blank" rel="noopener">Browse the published studies</a>
     </div>
-    <p class="tag-note">New entries are added to PredictIndex after a short check.</p>
   </section>
 
   <section id="about">
@@ -758,15 +761,17 @@
   render();
 
   // Section navigation: the current section is the last one whose top has
-  // passed a line 30% down the viewport (the last section once the page bottom
-  // is reached); in the narrow chip bar, keep the active chip in view.
+  // passed a line 30% down the viewport, and at most 160px down, so that a short
+  // section is still the current one right after its link is clicked (the last
+  // section once the page bottom is reached); in the narrow chip bar, keep the
+  // active chip in view.
   (function(){
     const bar = document.querySelector(".toc");
     const links = Array.from(bar.querySelectorAll("a"));
     const secs = links.map(a => document.getElementById(a.getAttribute("href").slice(1)));
     let current;
     function update(){
-      const line = innerHeight * 0.3;
+      const line = Math.min(innerHeight * 0.3, 160);
       let idx = -1;
       secs.forEach((el, i) => { if(el && el.getBoundingClientRect().top <= line) idx = i; });
       if(innerHeight + scrollY >= document.documentElement.scrollHeight - 2) idx = secs.length - 1;
