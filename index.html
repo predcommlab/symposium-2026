@@ -62,6 +62,9 @@
   .cta-sub strong{color:#fff;font-weight:600;}
 
   section{margin-bottom:38px;}
+  /* PredictIndex: the form as the main action, the published-studies table beside it */
+  .pi-links{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin:4px 0 14px;}
+  .pi-alt{font-size:15px;font-weight:500;}
   /* section navigation: one list; in the left gutter when the screen is wide
      enough for it beside the 940px column, a sticky chip bar otherwise */
   @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth;}}
@@ -336,6 +339,7 @@
 
   <nav class="toc" aria-label="Sections">
     <a href="#photos">Symposium photos</a>
+    <a href="#predictindex">PredictIndex</a>
     <a href="#about">About</a>
     <a href="#keynotes">Keynote speakers</a>
     <a href="#venue">The venue</a>
@@ -357,6 +361,16 @@
     </div>
     <p class="tag-note ph-foot"><span class="t-click">Click</span><span class="t-touch">Tap</span> a photo to enlarge it.</p>
     <div class="notice" id="ph-preview" hidden><p><b>Preview:</b> these are sample images. The photos from the symposium will follow.</p></div>
+  </section>
+
+  <section id="predictindex">
+    <h2>PredictIndex</h2>
+    <p class="lead"><a href="https://predcommlab.github.io/network-datasets/" target="_blank" rel="noopener">PredictIndex</a> is a searchable directory of predictive processing studies and datasets from the network. You can add your own studies with the form below. You can change your entry later, and other participants cannot see or change it.</p>
+    <div class="pi-links">
+      <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLScZ5s-y-Vw1pWGzYse1Ns0ZZnWvLxaNG9NpUlqrsu2GuPuIMA/viewform" target="_blank" rel="noopener">Add your study</a>
+      <a class="pi-alt" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTkLHx1uAmdjOH-0tOgeTLxnNcgXt-m9IhLRoDOz4B9RdGUlotz6c_Av67wBKwrwMusSFfCfqvoGg9b/pubhtml?gid=0&amp;single=true" target="_blank" rel="noopener">See the published studies</a>
+    </div>
+    <p class="tag-note">New entries are added to PredictIndex after a short check.</p>
   </section>
 
   <section id="about">
