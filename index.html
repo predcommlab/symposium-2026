@@ -236,16 +236,21 @@
   /* photos: one sideways strip with no frame, scrolled by hand. All photos share
      one height and keep their proportions; the next photo peeks in at the edge,
      which is what says the strip continues. The day links under it replace
-     per-day headings. */
+     per-day headings; they show only while each day's photos are together. */
   #program{margin-top:14px;}
   /* with no photos the script hides the section and the two links to it; both
      links set their own display, which would otherwise beat the hidden attribute */
   .cta[hidden],.toc a[hidden]{display:none;}
   #photos > h2{margin-bottom:12px;}
   #ph-preview{margin-top:12px;}
-  .ph-foot{margin:5px 0 0;}
   .ph-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0 14px;padding:7px 0 0;}
   .ph-days{display:flex;flex-wrap:wrap;gap:0 20px;}
+  /* the hint has its own line under the day links; where there are none, it takes
+     their place beside the counter */
+  .ph-foot{flex-basis:100%;margin:5px 0 0;}
+  .ph-days:empty{display:none;}
+  .ph-bar:has(.ph-days:empty){align-items:baseline;}
+  .ph-bar:has(.ph-days:empty) .ph-foot{order:-1;flex-basis:auto;margin:0;}
   /* padding for a 24 px tap target; the hidden ::after reserves the width of the
      bold version, so the links beside it stay put when the active day changes */
   .ph-chip{font:inherit;font-size:13.5px;color:var(--muted);background:none;border:0;padding:3px 0;cursor:pointer;text-align:left;}
@@ -362,8 +367,8 @@
     <div class="ph-bar">
       <div class="ph-days" id="ph-days"></div>
       <div class="ph-now" id="ph-count"></div>
+      <p class="tag-note ph-foot"><span class="t-click">Click</span><span class="t-touch">Tap</span> a photo to enlarge it.</p>
     </div>
-    <p class="tag-note ph-foot"><span class="t-click">Click</span><span class="t-touch">Tap</span> a photo to enlarge it.</p>
     <div class="notice" id="ph-preview" hidden><p><b>Preview:</b> these are sample images. The photos from the symposium will follow.</p></div>
   </section>
 
@@ -808,9 +813,12 @@
       '<a href="' + large(p) + '" data-i="' + i + '" target="_blank" rel="noopener">' +
       '<img src="' + thumb(p) + '" width="' + p.w + '" height="' + p.h + '" alt="' + esc(alt(p, i)).replace(/"/g, "&quot;") + '"' + (i > 3 ? ' loading="lazy"' : "") + '></a></figure>').join("");
 
+    // Day links only while the photos of each day are together. In an order that
+    // mixes the days they would jump back and forth, so they are left out.
     const days = [...new Set(PHOTOS.map(p => p.day))].filter(Boolean);
+    const together = PHOTOS.filter((p, i) => !i || p.day !== PHOTOS[i - 1].day).length === new Set(PHOTOS.map(p => p.day)).size;
     const daysBox = document.getElementById("ph-days");
-    if(days.length > 1) daysBox.innerHTML = days.map(d =>
+    if(days.length > 1 && together) daysBox.innerHTML = days.map(d =>
       '<button type="button" class="ph-chip" data-day="' + d + '">' + d + '</button>').join("");
 
     const figs = Array.from(strip.children);
